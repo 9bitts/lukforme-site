@@ -14,7 +14,9 @@ function waHref(text) {
 
 function productText(product) {
   const status = product.note ? ` (${product.note})` : "";
-  return `Olá, Luk for Me. Quero saber sobre a armação ${product.line} ${product.code} (${product.category}), ${brl(product.price)}${status}.`;
+  const variant = selectedVariant(product);
+  const color = variant ? `, cor ${variant.name}` : "";
+  return `Olá, Luk for Me. Quero saber sobre a armação ${product.line} ${product.code} (${product.category})${color}, ${brl(product.price)}${status}.`;
 }
 
 function findProduct(code) {
@@ -41,21 +43,55 @@ function glassesMark() {
   return svg;
 }
 
-function mediaFor(product) {
-  const media = el("div", "card-media");
-  if (product.image) {
-    const img = el("img");
-    img.src = product.image;
-    img.alt = `Armação ${product.line} ${product.code}`;
-    img.loading = "lazy";
-    media.append(img);
-  } else {
-    const ph = el("div", "ph");
-    ph.append(glassesMark(), el("span", "", product.code));
-    media.append(ph);
-  }
-  if (product.note) media.append(el("span", "badge", product.note));
-  return media;
+function variantsOf(product) {
+  return Array.isArray(product.variants) ? product.variants : [];
+}
+
+function selectedVariant(product) {
+  const variants = variantsOf(product);
+  const index = Math.min(product.selected || 0, Math.max(0, variants.length - 1));
+  return variants[index] || null;
+}
+
+function paintImage(img, product) {
+  const variant = selectedVariant(product);
+  img.src = variant ? variant.image : product.image;
+  img.alt = variant
+    ? `Armação ${displayName(product)} ${product.code}, cor ${variant.name}`
+    : `Armação ${displayName(product)} ${product.code}`;
+}
+
+function syncColor(product) {
+  document.querySelectorAll(`[data-photo="${product.id}"]`).forEach((img) => paintImage(img, product));
+  const current = product.selected || 0;
+  document.querySelectorAll(`[data-swatches="${product.id}"] .swatch`).forEach((button, index) => {
+    button.setAttribute("aria-pressed", String(index === current));
+  });
+  const dialog = document.getElementById("product-dialog");
+  const link = dialog?.querySelector("[data-wa]");
+  if (dialog?.open && link?.dataset.product === product.id) link.href = waHref(productText(product));
+}
+
+function swatchRow(product) {
+  const variants = variantsOf(product);
+  if (variants.length < 2) return null;
+  const row = el("div", "swatches");
+  row.dataset.swatches = product.id;
+  variants.forEach((variant, index) => {
+    const button = el("button", "swatch");
+    button.type = "button";
+    button.style.background = variant.color;
+    button.title = variant.name;
+    button.setAttribute("aria-label", `Cor ${variant.name}`);
+    button.setAttribute("aria-pressed", String(index === (product.selected || 0)));
+    button.addEventListener("click", (event) => {
+      event.stopPropagation();
+      product.selected = index;
+      syncColor(product);
+    });
+    row.append(button);
+  });
+  return row;
 }
 
 function openProduct(product) {
@@ -68,25 +104,30 @@ function openProduct(product) {
   const note = dialog.querySelector("[data-note]");
   const link = dialog.querySelector("[data-wa]");
   figure.replaceChildren();
-  if (product.image) {
+  if (product.image || variantsOf(product).length) {
     const img = el("img");
-    img.src = product.image;
-    img.alt = `Armação ${product.line} ${product.code}, ${product.colors ? product.colors + " cores" : product.group}`;
+    img.dataset.photo = product.id;
+    paintImage(img, product);
     figure.append(img);
   } else {
     const ph = el("div", "ph ph-lg");
     ph.append(glassesMark(), el("span", "", "Foto em breve"));
     figure.append(ph);
   }
+  dialog.querySelectorAll(".dialog-copy .swatches").forEach((row) => row.remove());
+  const colors = swatchRow(product);
+  if (colors) meta.before(colors);
   title.textContent = `${displayName(product)} ${product.code}`;
   const bits = [product.category];
   if (product.size) bits.push(`Tamanho ${product.size}`);
-  if (product.colors) bits.push(`${product.colors} ${product.colors === 1 ? "cor" : "cores"}`);
+  const count = variantsOf(product).length || product.colors;
+  if (count) bits.push(`${count} ${count === 1 ? "cor" : "cores"}`);
   meta.textContent = bits.join(" · ");
   price.textContent = brl(product.price);
   note.textContent = product.note
     ? "Este modelo está em falta no momento. Peça para avisar quando voltar."
     : "Valor da armação. As lentes são feitas sob a sua receita.";
+  link.dataset.product = product.id;
   link.href = waHref(productText(product));
   link.textContent = product.note ? "Avisar quando chegar" : "Pedir no WhatsApp";
   if (!dialog.open) dialog.showModal();
@@ -102,7 +143,20 @@ function cardFor(product) {
   const card = el("article", "product-card");
   const button = el("button", "card-hit");
   button.type = "button";
-  button.append(mediaFor(product));
+  const media = el("div", "card-media");
+  if (product.image || variantsOf(product).length) {
+    const img = el("img");
+    img.dataset.photo = product.id;
+    img.loading = "lazy";
+    paintImage(img, product);
+    media.append(img);
+  } else {
+    const ph = el("div", "ph");
+    ph.append(glassesMark(), el("span", "", product.code));
+    media.append(ph);
+  }
+  if (product.note) media.append(el("span", "badge", product.note));
+  button.append(media);
   const body = el("div", "card-body");
   body.append(
     el("p", "card-kicker", product.group),
@@ -114,6 +168,8 @@ function cardFor(product) {
   button.append(body);
   button.addEventListener("click", () => openProduct(product));
   card.append(button);
+  const colors = swatchRow(product);
+  if (colors) card.append(colors);
   return card;
 }
 

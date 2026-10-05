@@ -359,7 +359,33 @@ h1 em, h2 em { font-style: italic; color: var(--gold); }
   overflow: hidden;
 }
 .card-media img { width: 100%; height: 100%; object-fit: contain; }
-.card-body { padding: 0.95rem 1rem 1.1rem; }
+.card-body { padding: 0.75rem 1rem 0.35rem; }
+.swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  padding: 0.15rem 1rem 0.95rem;
+}
+.swatch {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 1px solid rgba(28, 22, 18, 0.28);
+  background: #ddd;
+  cursor: pointer;
+  box-shadow: 0 0 0 2px transparent;
+}
+.swatch[aria-pressed="true"] {
+  box-shadow: 0 0 0 2px #fbf8f4, 0 0 0 3.5px #1c1612;
+}
+figure .swatches {
+  position: absolute;
+  left: 0.9rem;
+  bottom: 0.9rem;
+  padding: 0.45rem;
+  background: rgba(246, 241, 234, 0.92);
+}
+.dialog-grid figure { position: relative; }
 .card-kicker, .card-code, .card-size {
   margin: 0;
   color: var(--muted);
@@ -577,6 +603,7 @@ dialog::backdrop { background: rgba(28, 22, 18, 0.62); }
 .dialog-grid figure { margin: 0; background: #f6f1ea; min-height: 320px; display: grid; place-items: center; }
 .dialog-grid img { width: 100%; height: 100%; max-height: 78vh; object-fit: contain; }
 .dialog-copy { padding: 1.5rem 1.4rem 1.4rem; position: relative; }
+.dialog-copy .swatches { padding: 0.2rem 0 0.85rem; }
 .dialog-copy h2 { margin: 0.3rem 0; font-size: clamp(2.2rem, 4vw, 3.4rem); line-height: 0.95; }
 .close-btn {
   position: absolute;
