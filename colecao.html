@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Coleção · Luk for Me</title>
+  <meta name="description" content="Catálogo Luk for Me: acetato, metal, Flex 360°, TR Comfort, solar e clip-on, com preço de armação.">
+  <meta name="theme-color" content="#1c1612">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <p class="topbar">Frete grátis em compras acima de R$ 800</p>
+  <header class="site-header">
+    <a class="logo" href="index.html" aria-label="Luk for Me, início">
+      <span class="logo-mark">Luk</span>
+      <span class="logo-sub">for Me</span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="sr-only">Abrir menu</span>
+      <span class="burger"></span>
+    </button>
+    <nav id="site-nav" class="site-nav" aria-label="Seções">
+      <a href="index.html">Início</a>
+      <a href="colecao.html" aria-current="page">Coleção</a>
+      <a href="index.html#materiais">Materiais</a>
+      <a href="garantia.html">Garantia</a>
+      <a href="index.html#contato">Contato</a>
+    </nav>
+    <a class="header-wa" href="https://wa.me/5531996930611?text=Ol%C3%A1%2C%20Luk%20for%20Me.%20Quero%20ajuda%20para%20escolher%20uma%20arma%C3%A7%C3%A3o.">WhatsApp</a>
+  </header>
+
+  <main>
+    <section class="page-intro">
+      <div class="wrap">
+        <p class="kicker">Coleção Caili + Luk</p>
+        <div class="section-head">
+          <h1>Todos os modelos.</h1>
+          <p>Preço da armação. Toque no modelo para ver as cores e pedir pelo WhatsApp. As lentes entram no orçamento, de acordo com a receita.</p>
+        </div>
+        <div class="toolbar">
+          <div class="chips" id="chips"></div>
+          <div class="toolbar-row">
+            <label class="field">Buscar
+              <input id="busca" type="search" placeholder="Linha, código ou material">
+            </label>
+            <label class="field">Linha
+              <select id="linha"><option value="">Todas as linhas</option></select>
+            </label>
+            <label class="field">Ordenar
+              <select id="ordem">
+                <option value="colecao">Coleção</option>
+                <option value="menor">Menor preço</option>
+                <option value="maior">Maior preço</option>
+                <option value="nome">Linha</option>
+              </select>
+            </label>
+          </div>
+          <p id="resultado" aria-live="polite"></p>
+        </div>
+        <div class="product-grid" id="catalog-grid"></div>
+        <p class="empty" id="vazio" hidden>Nenhum modelo com esse filtro. Limpe a busca ou escolha outra linha.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div>
+        <h2>Luk for Me</h2>
+        <p>Atendimento online para todo o Brasil.</p>
+      </div>
+      <div>
+        <h3>Coleção</h3>
+        <ul>
+          <li><a href="colecao.html?grupo=Acetato">Acetato</a></li>
+          <li><a href="colecao.html?grupo=Metal">Metal</a></li>
+          <li><a href="colecao.html?grupo=Flex%20360%C2%B0">Flex 360°</a></li>
+          <li><a href="colecao.html?grupo=Solar">Solar</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>A ótica</h3>
+        <ul>
+          <li><a href="index.html#sobre">Nossa história</a></li>
+          <li><a href="garantia.html">Garantia</a></li>
+          <li><a href="garantia.html#cuidados">Cuidados</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Atendimento</h3>
+        <ul>
+          <li><a href="https://wa.me/5531996930611">(31) 99693-0611</a></li>
+          <li>Seg–sex 9h–18h</li>
+          <li>Sáb 9h–13h</li>
+        </ul>
+      </div>
+    </div>
+    <div class="wrap legal">
+      <span>© <span id="ano">2026</span> Luk for Me</span>
+      <span>Preços das armações. Lentes sob receita.</span>
+    </div>
+  </footer>
+
+  <dialog id="product-dialog" class="product-dialog" aria-labelledby="dialog-title">
+    <div class="dialog-grid">
+      <figure data-figure></figure>
+      <div class="dialog-copy">
+        <button class="close-btn" type="button" data-close aria-label="Fechar">×</button>
+        <p class="kicker">Armação</p>
+        <h2 id="dialog-title" data-title></h2>
+        <p data-meta></p>
+        <p class="price" data-price></p>
+        <p data-note></p>
+        <a class="btn btn-dark" data-wa href="https://wa.me/5531996930611">Pedir no WhatsApp</a>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="js/catalog-data.js" defer></script>
+  <script src="js/site.js" defer></script>
+</body>
+</html>
