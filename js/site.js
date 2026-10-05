@@ -16,7 +16,7 @@ function productText(product) {
   const status = product.note ? ` (${product.note})` : "";
   const variant = selectedVariant(product);
   const color = variant ? `, cor ${variant.name}` : "";
-  return `Olá, Luk for Me. Quero saber sobre a armação ${product.line} ${product.code} (${product.category})${color}, ${brl(product.price)}${status}.`;
+  return `Olá, Luk for Me. Quero a armação ${product.line} ${product.code} (${product.category})${color}, ${brl(product.price)}${status}. Vou enviar a foto da receita e uma foto de frente.`;
 }
 
 function findProduct(code) {
@@ -126,7 +126,7 @@ function openProduct(product) {
   price.textContent = brl(product.price);
   note.textContent = product.note
     ? "Este modelo está em falta no momento. Peça para avisar quando voltar."
-    : "Valor da armação. As lentes são feitas sob a sua receita.";
+    : "Valor da armação. No WhatsApp, envie a foto da receita e uma foto de frente. A lente é orçada em seguida.";
   link.dataset.product = product.id;
   link.href = waHref(productText(product));
   link.textContent = product.note ? "Avisar quando chegar" : "Pedir no WhatsApp";
@@ -143,6 +143,7 @@ function cardFor(product) {
   const card = el("article", "product-card");
   const button = el("button", "card-hit");
   button.type = "button";
+  button.setAttribute("aria-label", `${displayName(product)} ${product.code}`);
   const media = el("div", "card-media");
   if (product.image || variantsOf(product).length) {
     const img = el("img");
@@ -157,19 +158,13 @@ function cardFor(product) {
   }
   if (product.note) media.append(el("span", "badge", product.note));
   button.append(media);
-  const body = el("div", "card-body");
-  body.append(
-    el("p", "card-kicker", product.group),
-    el("h3", "", displayName(product)),
-    el("p", "card-code", product.code),
-    el("p", "price", brl(product.price))
-  );
-  if (product.size) body.append(el("p", "card-size", product.size));
-  button.append(body);
   button.addEventListener("click", () => openProduct(product));
   card.append(button);
+  const foot = el("div", "card-foot");
+  foot.append(el("p", "card-line", `${product.group} · ${product.code} · ${brl(product.price)}`));
   const colors = swatchRow(product);
-  if (colors) card.append(colors);
+  if (colors) foot.append(colors);
+  card.append(foot);
   return card;
 }
 
