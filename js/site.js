@@ -308,11 +308,18 @@ function initForms() {
 function initDialog() {
   const dialog = document.getElementById("product-dialog");
   if (!dialog) return;
+  const figure = dialog.querySelector("[data-figure]");
   dialog.querySelectorAll("[data-close]").forEach((button) => {
     button.addEventListener("click", () => dialog.close());
   });
   dialog.addEventListener("click", (event) => {
     if (event.target === dialog) dialog.close();
+  });
+  dialog.addEventListener("close", () => dialog.classList.remove("is-zoomed"));
+  figure?.addEventListener("click", () => {
+    if (!figure.querySelector("img")) return;
+    const zoomed = dialog.classList.toggle("is-zoomed");
+    figure.setAttribute("aria-label", zoomed ? "Reduzir a foto" : "Ampliar a foto da armação");
   });
 }
 
