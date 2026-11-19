@@ -9,10 +9,11 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+  <a class="skip" href="#conteudo">Ir para o conteúdo</a>
   <p class="topbar">Armação com preço · Lente sob receita · Frete grátis acima de R$ 800</p>
   <header class="site-header">
     <a class="logo" href="index.html" aria-label="Luk for Me, início">
@@ -31,7 +32,7 @@
     <a class="header-wa" href="https://wa.me/5531996930611?text=Ol%C3%A1%2C%20Luk%20for%20Me.%20Quero%20ajuda%20para%20escolher%20uma%20arma%C3%A7%C3%A3o.">WhatsApp</a>
   </header>
 
-  <main>
+  <main id="conteudo">
     <section class="page-intro">
       <div class="wrap">
         <p class="kicker">Coleção Caili + Luk</p>
@@ -77,7 +78,9 @@
           <li><a href="colecao.html?grupo=Acetato">Acetato</a></li>
           <li><a href="colecao.html?grupo=Metal">Metal</a></li>
           <li><a href="colecao.html?grupo=Flex%20360%C2%B0">Flex 360°</a></li>
+          <li><a href="colecao.html?grupo=TR%20Comfort">TR Comfort</a></li>
           <li><a href="colecao.html?grupo=Solar">Solar</a></li>
+          <li><a href="colecao.html?grupo=Clip-on">Clip-on</a></li>
         </ul>
       </div>
       <div>
@@ -104,7 +107,7 @@
   </footer>
 
   <dialog id="product-dialog" class="product-dialog" aria-labelledby="dialog-title">
-    <button class="close-btn" type="button" data-close aria-label="Fechar">×</button>
+    <button class="close-btn" type="button" data-close aria-label="Fechar"></button>
     <div class="dialog-grid">
       <figure data-figure aria-label="Ampliar a foto da armação"></figure>
       <div class="dialog-copy">

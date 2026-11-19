@@ -59,13 +59,26 @@ function paintImage(img, product) {
   img.alt = variant
     ? `Armação ${displayName(product)} ${product.code}, cor ${variant.name}`
     : `Armação ${displayName(product)} ${product.code}`;
+  if (!img.dataset.bound) {
+    img.dataset.bound = "1";
+    img.addEventListener("error", () => {
+      const frame = img.parentElement;
+      if (!frame || frame.querySelector(".ph")) return;
+      img.remove();
+      const ph = el("div", "ph");
+      ph.append(glassesMark(), el("span", "", "Foto em breve"));
+      frame.append(ph);
+    });
+  }
 }
 
 function syncColor(product) {
   document.querySelectorAll(`[data-photo="${product.id}"]`).forEach((img) => paintImage(img, product));
   const current = product.selected || 0;
-  document.querySelectorAll(`[data-swatches="${product.id}"] .swatch`).forEach((button, index) => {
-    button.setAttribute("aria-pressed", String(index === current));
+  document.querySelectorAll(`[data-swatches="${product.id}"]`).forEach((row) => {
+    row.querySelectorAll(".swatch").forEach((button, index) => {
+      button.setAttribute("aria-pressed", String(index === current));
+    });
   });
   const dialog = document.getElementById("product-dialog");
   const link = dialog?.querySelector("[data-wa]");
@@ -107,8 +120,8 @@ function openProduct(product) {
   if (product.image || variantsOf(product).length) {
     const img = el("img");
     img.dataset.photo = product.id;
-    paintImage(img, product);
     figure.append(img);
+    paintImage(img, product);
   } else {
     const ph = el("div", "ph ph-lg");
     ph.append(glassesMark(), el("span", "", "Foto em breve"));
@@ -118,7 +131,7 @@ function openProduct(product) {
   const colors = swatchRow(product);
   if (colors) meta.before(colors);
   title.textContent = `${displayName(product)} ${product.code}`;
-  const bits = [product.category];
+  const bits = [product.group];
   if (product.size) bits.push(`Tamanho ${product.size}`);
   const count = variantsOf(product).length || product.colors;
   if (count) bits.push(`${count} ${count === 1 ? "cor" : "cores"}`);
@@ -139,32 +152,47 @@ function displayName(product) {
   return product.line;
 }
 
+function cardDetail(product) {
+  const name = displayName(product);
+  if (name === product.group && product.line && product.line !== name) {
+    return `${product.line} · ${product.code}`;
+  }
+  return `${product.group} · ${product.code}`;
+}
+
 function cardFor(product) {
   const card = el("article", "product-card");
   const button = el("button", "card-hit");
   button.type = "button";
-  button.setAttribute("aria-label", `${displayName(product)} ${product.code}`);
   const media = el("div", "card-media");
   if (product.image || variantsOf(product).length) {
     const img = el("img");
     img.dataset.photo = product.id;
     img.loading = "lazy";
-    paintImage(img, product);
+    img.decoding = "async";
     media.append(img);
+    paintImage(img, product);
   } else {
     const ph = el("div", "ph");
     ph.append(glassesMark(), el("span", "", product.code));
     media.append(ph);
   }
   if (product.note) media.append(el("span", "badge", product.note));
-  button.append(media);
+  const copy = el("div", "card-copy");
+  copy.append(
+    el("p", "card-name", displayName(product)),
+    el("p", "card-code", cardDetail(product)),
+    el("p", "card-price", brl(product.price))
+  );
+  button.append(media, copy);
   button.addEventListener("click", () => openProduct(product));
   card.append(button);
-  const foot = el("div", "card-foot");
-  foot.append(el("p", "card-line", `${product.group} · ${product.code} · ${brl(product.price)}`));
   const colors = swatchRow(product);
-  if (colors) foot.append(colors);
-  card.append(foot);
+  if (colors) {
+    const bar = el("div", "swatch-bar");
+    bar.append(colors);
+    card.append(bar);
+  }
   return card;
 }
 
@@ -172,16 +200,18 @@ function initNav() {
   const toggle = document.querySelector(".nav-toggle");
   const nav = document.getElementById("site-nav");
   if (!toggle || !nav) return;
+  const label = toggle.querySelector(".sr-only");
+  function setOpen(open) {
+    toggle.setAttribute("aria-expanded", String(open));
+    nav.classList.toggle("is-open", open);
+    document.body.classList.toggle("nav-open", open);
+    if (label) label.textContent = open ? "Fechar menu" : "Abrir menu";
+  }
   toggle.addEventListener("click", () => {
-    const open = toggle.getAttribute("aria-expanded") === "true";
-    toggle.setAttribute("aria-expanded", String(!open));
-    nav.classList.toggle("is-open", !open);
+    setOpen(toggle.getAttribute("aria-expanded") !== "true");
   });
   nav.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => {
-      toggle.setAttribute("aria-expanded", "false");
-      nav.classList.remove("is-open");
-    });
+    link.addEventListener("click", () => setOpen(false));
   });
 }
 
@@ -230,7 +260,7 @@ function initCatalog() {
       button.addEventListener("click", () => {
         group = name;
         line = "";
-        paint();
+        paint("push");
       });
       chips.append(button);
     });
@@ -250,7 +280,7 @@ function initCatalog() {
       if (group !== "todos" && item.group !== group) return false;
       if (line && item.line !== line) return false;
       if (!q) return true;
-      return `${item.line} ${item.code} ${item.category} ${item.group}`.toLowerCase().includes(q);
+      return `${item.line} ${item.code} ${item.category} ${item.group} ${item.size || ""} ${item.note || ""}`.toLowerCase().includes(q);
     });
     const mode = sortSelect.value;
     if (mode === "menor") items.sort((a, b) => a.price - b.price || a.code.localeCompare(b.code));
@@ -259,31 +289,45 @@ function initCatalog() {
     return items;
   }
 
-  function paint() {
+  function paint(mode) {
     paintChips();
     paintLines();
     const items = filtered();
     grid.replaceChildren(...items.map(cardFor));
     count.textContent = `${items.length} ${items.length === 1 ? "modelo" : "modelos"}`;
     empty.hidden = items.length > 0;
+    if (mode === "silent") return;
     const next = new URLSearchParams();
     if (group !== "todos") next.set("grupo", group);
     if (line) next.set("linha", line);
     if (query.trim()) next.set("q", query.trim());
     const qs = next.toString();
-    history.replaceState(null, "", qs ? `${location.pathname}?${qs}` : location.pathname);
+    const url = qs ? `${location.pathname}?${qs}` : location.pathname;
+    const current = location.pathname + location.search;
+    if (url === current) return;
+    if (mode === "push") history.pushState(null, "", url);
+    else history.replaceState(null, "", url);
   }
 
   lineSelect.addEventListener("change", () => {
     line = lineSelect.value;
-    paint();
+    paint("push");
   });
-  sortSelect.addEventListener("change", paint);
+  sortSelect.addEventListener("change", () => paint("silent"));
   search.addEventListener("input", () => {
     query = search.value;
-    paint();
+    paint("replace");
   });
-  paint();
+  window.addEventListener("popstate", () => {
+    const nextParams = new URLSearchParams(location.search);
+    group = nextParams.get("grupo") || "todos";
+    if (group !== "todos" && !GROUPS.includes(group)) group = "todos";
+    line = nextParams.get("linha") || "";
+    query = nextParams.get("q") || "";
+    if (search) search.value = query;
+    paint("silent");
+  });
+  paint("replace");
 
   const modelo = params.get("modelo");
   if (modelo) {
@@ -299,7 +343,7 @@ function initForms() {
       const email = new FormData(form).get("email");
       const address = String(email || "").trim();
       if (!address) return;
-      window.open(waHref(`Olá, Luk for Me. Quero entrar no Club e receber lançamentos. Meu e-mail: ${address}`), "_blank", "noopener");
+      window.open(waHref(`Olá, Luk for Me. Quero entrar no Club e receber lançamentos. Meu e-mail: ${address}`), "_blank", "noopener,noreferrer");
       form.reset();
     });
   });
@@ -315,11 +359,19 @@ function initDialog() {
   dialog.addEventListener("click", (event) => {
     if (event.target === dialog) dialog.close();
   });
-  dialog.addEventListener("close", () => dialog.classList.remove("is-zoomed"));
+  function setZoom(zoomed) {
+    dialog.classList.toggle("is-zoomed", zoomed);
+    figure?.setAttribute("aria-label", zoomed ? "Reduzir a foto" : "Ampliar a foto da armação");
+  }
+  dialog.addEventListener("close", () => setZoom(false));
+  dialog.addEventListener("cancel", (event) => {
+    if (!dialog.classList.contains("is-zoomed")) return;
+    event.preventDefault();
+    setZoom(false);
+  });
   figure?.addEventListener("click", () => {
     if (!figure.querySelector("img")) return;
-    const zoomed = dialog.classList.toggle("is-zoomed");
-    figure.setAttribute("aria-label", zoomed ? "Reduzir a foto" : "Ampliar a foto da armação");
+    setZoom(!dialog.classList.contains("is-zoomed"));
   });
 }
 

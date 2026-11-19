@@ -9,10 +9,12 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="assets/editorial/hero-modelo.jpg">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+  <a class="skip" href="#conteudo">Ir para o conteúdo</a>
   <p class="topbar">Armação com preço · Lente sob receita · Frete grátis acima de R$ 800</p>
   <header class="site-header">
     <a class="logo" href="index.html" aria-label="Luk for Me, início">
@@ -31,7 +33,7 @@
     <a class="header-wa" href="https://wa.me/5531996930611?text=Ol%C3%A1%2C%20Luk%20for%20Me.%20Vim%20pelo%20site%20e%20quero%20conhecer%20a%20cole%C3%A7%C3%A3o.">WhatsApp</a>
   </header>
 
-  <main>
+  <main id="conteudo">
     <section class="hero">
       <div class="wrap-wide hero-grid">
         <div class="hero-copy">
@@ -42,7 +44,7 @@
           </div>
         </div>
         <figure class="hero-stage">
-          <img src="assets/editorial/hero-modelo.jpg" alt="Modelo com óculos de acetato tartaruga e lentes âmbar">
+          <img src="assets/editorial/hero-modelo.jpg" alt="Modelo com óculos de acetato tartaruga e lentes âmbar" fetchpriority="high" decoding="async">
         </figure>
       </div>
     </section>
@@ -98,11 +100,11 @@
             <div class="material-copy">
               <span>03 — Flex 360°</span>
               <h3>Haste que gira</h3>
-              <p>Felipe, Augusto, Ricardo, Victor e os clip-ons Lucas e Yurin.</p>
+              <p>Felipe, Augusto, Ricardo, Victor, Lucas e Yurin.</p>
             </div>
           </a>
           <a class="material-card" href="colecao.html?grupo=TR%20Comfort">
-            <div class="material-photo tone tone-sand">6603</div>
+            <div class="material-photo tone tone-sand"><span>Comfort</span><strong>6601–6612</strong></div>
             <div class="material-copy">
               <span>04 — TR Comfort</span>
               <h3>Coleção Comfort</h3>
@@ -110,7 +112,7 @@
             </div>
           </a>
           <a class="material-card" href="colecao.html?grupo=Solar">
-            <div class="material-photo tone tone-ink">Sol</div>
+            <div class="material-photo tone tone-ink"><span>Solar</span><strong>Seis modelos</strong></div>
             <div class="material-copy">
               <span>05 — Solar</span>
               <h3>Acetato ao sol</h3>
@@ -118,7 +120,7 @@
             </div>
           </a>
           <a class="material-card" href="colecao.html?grupo=Clip-on">
-            <div class="material-photo tone tone-terra">Clip</div>
+            <div class="material-photo tone tone-terra"><span>Clip-on</span><strong>Grau e sol</strong></div>
             <div class="material-copy">
               <span>06 — Clip-on</span>
               <h3>Grau e sol</h3>
@@ -129,7 +131,7 @@
       </div>
     </section>
 
-    <section class="section" id="rosto" style="padding-top: 0">
+    <section class="section tight" id="rosto">
       <div class="wrap">
         <div class="section-head">
           <div>
@@ -155,7 +157,7 @@
       </div>
     </section>
 
-    <section class="section" style="padding-top: 0">
+    <section class="section tight">
       <div class="wrap">
         <div class="section-head">
           <div>
@@ -214,7 +216,7 @@
       </div>
     </section>
 
-    <section class="section" id="clube" style="padding-top: 0">
+    <section class="section tight" id="clube">
       <div class="wrap gift-grid">
         <article class="gift-panel">
           <p class="kicker">Garantia</p>
@@ -235,7 +237,7 @@
       </div>
     </section>
 
-    <section class="section" id="contato" style="padding-top: 0">
+    <section class="section tight" id="contato">
       <div class="wrap contact-grid">
         <div>
           <p class="kicker">Contato</p>
@@ -249,11 +251,11 @@
           </li>
           <li>
             <span>Horário</span>
-            <a href="tel:+5531996930611">Seg–sex 9h–18h · Sáb 9h–13h</a>
+            <p>Seg–sex 9h–18h · Sáb 9h–13h</p>
           </li>
           <li>
             <span>Onde</span>
-            <a href="colecao.html">Atendimento online para todo o Brasil</a>
+            <p>Atendimento online para todo o Brasil</p>
           </li>
         </ul>
       </div>
@@ -274,6 +276,7 @@
           <li><a href="colecao.html?grupo=Flex%20360%C2%B0">Flex 360°</a></li>
           <li><a href="colecao.html?grupo=TR%20Comfort">TR Comfort</a></li>
           <li><a href="colecao.html?grupo=Solar">Solar</a></li>
+          <li><a href="colecao.html?grupo=Clip-on">Clip-on</a></li>
         </ul>
       </div>
       <div>
@@ -289,7 +292,7 @@
         <h3>Atendimento</h3>
         <ul>
           <li><a href="https://wa.me/5531996930611">(31) 99693-0611</a></li>
-          <li>lukfor.me</li>
+          <li><a href="https://lukfor.me">lukfor.me</a></li>
           <li>Seg–sex 9h–18h</li>
           <li>Sáb 9h–13h</li>
         </ul>
@@ -302,7 +305,7 @@
   </footer>
 
   <dialog id="product-dialog" class="product-dialog" aria-labelledby="dialog-title">
-    <button class="close-btn" type="button" data-close aria-label="Fechar">×</button>
+    <button class="close-btn" type="button" data-close aria-label="Fechar"></button>
     <div class="dialog-grid">
       <figure data-figure aria-label="Ampliar a foto da armação"></figure>
       <div class="dialog-copy">
