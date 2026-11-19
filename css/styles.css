@@ -695,60 +695,84 @@ input:-webkit-autofill {
 .store-tease a:hover img { transform: scale(1.04); }
 .store-more { width: min(1320px, calc(100% - 6vw)); }
 
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.85rem;
+.viewer-stage {
+  position: relative;
+  height: clamp(420px, 58vh, 640px);
+  background: #101018;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 4px);
+  overflow: hidden;
+}
+.viewer-stage figure {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.viewer-stage img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+.viewer-stage figcaption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.4rem 4.4rem 0.9rem;
+  background: linear-gradient(transparent, rgba(7, 7, 12, 0.88));
+  color: var(--text-dim);
+  font-size: 0.92rem;
+  font-weight: 300;
+}
+.viewer-stage figcaption [data-count] {
+  flex: none;
+  color: var(--accent);
+  letter-spacing: 0.06em;
+}
+.thumbs {
+  display: flex;
+  gap: 0.55rem;
+  margin-top: 0.85rem;
+  overflow-x: auto;
+  padding: 0.15rem 0.15rem 0.45rem;
+  scroll-snap-type: x proximity;
 }
 .shot {
-  width: 100%;
+  flex: 0 0 84px;
+  width: 84px;
+  height: 84px;
   margin: 0;
   padding: 0;
   border: 0;
   background: #12121a;
-  border-radius: calc(var(--radius) + 2px);
+  border-radius: 12px;
   overflow: hidden;
-  cursor: zoom-in;
-  aspect-ratio: 3 / 4;
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+  scroll-snap-align: start;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
 }
-.shot:not([hidden]) { display: block; }
+.shot[hidden] { display: none; }
 .shot img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
 }
-.photo-dialog {
-  width: min(920px, calc(100vw - 1.5rem));
-  max-height: calc(100dvh - 1.5rem);
-  margin: auto;
-  padding: 0;
-  border: 1px solid var(--border);
-  border-radius: 22px;
-  background: #101018;
-  color: var(--text);
-  overflow: hidden;
-}
-.photo-dialog figure { margin: 0; }
-.photo-dialog img {
-  width: 100%;
-  max-height: calc(100dvh - 7rem);
-  object-fit: contain;
-  background: #07070c;
-}
-.photo-dialog figcaption {
-  padding: 0.9rem 4.2rem 1rem;
-  color: var(--text-dim);
-  font-size: 0.92rem;
-  font-weight: 300;
-}
+.shot[aria-current="true"] { box-shadow: 0 0 0 2px var(--accent); }
 .photo-nav {
   position: absolute;
-  top: 42%;
+  top: 46%;
   z-index: 2;
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   border: 1px solid var(--border);
   border-radius: 999px;
   background: rgba(7, 7, 12, 0.78);
@@ -760,14 +784,14 @@ input:-webkit-autofill {
 .photo-nav::before {
   content: "";
   position: absolute;
-  top: 15px;
+  top: 16px;
   width: 10px;
   height: 10px;
   border-top: 1.5px solid currentColor;
   border-right: 1.5px solid currentColor;
 }
-.photo-nav.prev::before { left: 17px; transform: rotate(-135deg); }
-.photo-nav.next::before { left: 13px; transform: rotate(45deg); }
+.photo-nav.prev::before { left: 18px; transform: rotate(-135deg); }
+.photo-nav.next::before { left: 14px; transform: rotate(45deg); }
 .photo-nav:hover { border-color: var(--accent); color: var(--accent); }
 .toolbar { display: grid; gap: 0.9rem; margin: 1.4rem 0 1.2rem; }
 .chips { display: flex; flex-wrap: wrap; gap: 0.45rem; }
@@ -965,7 +989,7 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.72); }
   .nav-wa { display: flex; }
   .logo img { height: 50px; }
   .lookbook figure { aspect-ratio: 4 / 5; }
-  .store-tease, .gallery { grid-template-columns: 1fr 1fr; }
+  .store-tease { grid-template-columns: 1fr 1fr; }
   .lens-row, .numbers, .toolbar-row { grid-template-columns: 1fr 1fr; }
   .nav-toggle { display: inline-block; }
   .site-nav {
@@ -999,8 +1023,9 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.72); }
   h1 { font-size: 2.5rem; }
   .hero { padding-top: 2.2rem; }
   .lookbook figure { aspect-ratio: 1 / 1; }
-  .gallery { grid-template-columns: 1fr 1fr; }
-  .photo-dialog figcaption { padding-left: 1rem; padding-right: 1rem; }
+  .viewer-stage { height: 52vh; }
+  .viewer-stage figcaption { padding-left: 0.9rem; padding-right: 0.9rem; flex-direction: column; }
+  .shot { flex-basis: 72px; width: 72px; height: 72px; }
   .logo img { height: 46px; }
   .topbar { letter-spacing: 0.02em; font-size: 0.68rem; line-height: 1.45; }
   .dialog-grid figure { min-height: 240px; }

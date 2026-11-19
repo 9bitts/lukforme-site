@@ -39,7 +39,7 @@
         <p class="kicker">A loja</p>
         <div class="section-head">
           <h1>O espaço, de perto.</h1>
-          <p>Vitrine, bustos e detalhes do atendimento. Toque numa foto para ampliar.</p>
+          <p>Uma foto de cada vez. Use as setas ou toque numa miniatura.</p>
         </div>
         <div class="chips" role="group" aria-label="Filtrar fotos">
           <button class="chip" type="button" data-filter="todas" aria-pressed="true">Todas</button>
@@ -47,8 +47,20 @@
           <button class="chip" type="button" data-filter="vitrine" aria-pressed="false">Vitrine</button>
           <button class="chip" type="button" data-filter="detalhes" aria-pressed="false">Detalhes</button>
         </div>
-        <div class="gallery" id="galeria">
-          <button class="shot" type="button" data-cat="loja"><img src="assets/loja/entrada.jpg" alt="Entrada da ótica, com o letreiro 404 e os bustos coloridos" loading="lazy" decoding="async"></button>
+        <div class="viewer">
+          <div class="viewer-stage">
+            <button class="photo-nav prev" type="button" data-prev aria-label="Foto anterior"></button>
+            <figure>
+              <img data-main src="assets/loja/entrada.jpg" alt="Entrada da ótica, com o letreiro 404 e os bustos coloridos">
+              <figcaption>
+                <span data-caption>Entrada da ótica, com o letreiro 404 e os bustos coloridos</span>
+                <span data-count>1 de 40</span>
+              </figcaption>
+            </figure>
+            <button class="photo-nav next" type="button" data-next aria-label="Próxima foto"></button>
+          </div>
+          <div class="thumbs" id="galeria">
+          <button class="shot" type="button" data-cat="loja" aria-current="true"><img src="assets/loja/entrada.jpg" alt="Entrada da ótica, com o letreiro 404 e os bustos coloridos" decoding="async"></button>
           <button class="shot" type="button" data-cat="loja"><img src="assets/loja/pedestais.jpg" alt="Dois pedestais com bustos e óculos, no corredor da loja" loading="lazy" decoding="async"></button>
           <button class="shot" type="button" data-cat="loja"><img src="assets/loja/estamos-abertos.jpg" alt="Placa Estamos abertos, Ótica Luk for Me" loading="lazy" decoding="async"></button>
           <button class="shot" type="button" data-cat="loja"><img src="assets/loja/no-rosto.jpg" alt="Óculos escuros no rosto, no espelho da loja" loading="lazy" decoding="async"></button>
@@ -90,6 +102,7 @@
           <button class="shot" type="button" data-cat="detalhes"><img src="assets/loja/estojos-lente.jpg" alt="Estojos de lente de contato embalados" loading="lazy" decoding="async"></button>
           <button class="shot" type="button" data-cat="detalhes"><img src="assets/loja/flanelas.jpg" alt="Flanelas embaladas, com a estampa for Me" loading="lazy" decoding="async"></button>
           <button class="shot" type="button" data-cat="detalhes"><img src="assets/loja/equipamento.jpg" alt="Equipamento de exame na mesa da ótica" loading="lazy" decoding="async"></button>
+          </div>
         </div>
         <div class="actions">
           <a class="btn btn-dark" href="colecao.html">Ver a coleção</a>
@@ -140,22 +153,12 @@
     </div>
   </footer>
 
-  <dialog id="photo-dialog" class="photo-dialog" aria-label="Foto ampliada">
-    <button class="close-btn" type="button" data-photo-close aria-label="Fechar"></button>
-    <button class="photo-nav prev" type="button" data-photo-prev aria-label="Foto anterior"></button>
-    <figure>
-      <img alt="" data-photo-full>
-      <figcaption data-photo-caption></figcaption>
-    </figure>
-    <button class="photo-nav next" type="button" data-photo-next aria-label="Próxima foto"></button>
-  </dialog>
-
   <script src="js/site.js" defer></script>
   <script>
     const shots = [...document.querySelectorAll(".shot")];
-    const dialog = document.getElementById("photo-dialog");
-    const full = dialog.querySelector("[data-photo-full]");
-    const caption = dialog.querySelector("[data-photo-caption]");
+    const main = document.querySelector("[data-main]");
+    const caption = document.querySelector("[data-caption]");
+    const count = document.querySelector("[data-count]");
     let index = 0;
 
     function visibleShots() {
@@ -167,39 +170,44 @@
       if (!list.length) return;
       index = (next + list.length) % list.length;
       const img = list[index].querySelector("img");
-      full.src = img.currentSrc || img.src;
-      full.alt = img.alt;
+      main.src = img.currentSrc || img.src;
+      main.alt = img.alt;
       caption.textContent = img.alt;
-      if (!dialog.open) dialog.showModal();
+      count.textContent = (index + 1) + " de " + list.length;
+      shots.forEach((shot) => shot.removeAttribute("aria-current"));
+      const thumb = list[index];
+      thumb.setAttribute("aria-current", "true");
+      const rail = thumb.parentElement;
+      const delta = thumb.getBoundingClientRect().left - rail.getBoundingClientRect().left;
+      rail.scrollTo({
+        left: rail.scrollLeft + delta - (rail.clientWidth - thumb.offsetWidth) / 2,
+        behavior: "smooth"
+      });
     }
 
     shots.forEach((shot) => {
       shot.addEventListener("click", () => show(visibleShots().indexOf(shot)));
     });
-
-    dialog.querySelector("[data-photo-close]").addEventListener("click", () => dialog.close());
-    dialog.querySelector("[data-photo-prev]").addEventListener("click", () => show(index - 1));
-    dialog.querySelector("[data-photo-next]").addEventListener("click", () => show(index + 1));
-    dialog.addEventListener("click", (event) => {
-      if (event.target === dialog) dialog.close();
-    });
-    dialog.addEventListener("cancel", () => dialog.close());
+    document.querySelector("[data-prev]").addEventListener("click", () => show(index - 1));
+    document.querySelector("[data-next]").addEventListener("click", () => show(index + 1));
     document.addEventListener("keydown", (event) => {
-      if (!dialog.open) return;
-      if (event.key === "ArrowLeft") show(index - 1);
-      if (event.key === "ArrowRight") show(index + 1);
+      if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+      event.preventDefault();
+      show(event.key === "ArrowLeft" ? index - 1 : index + 1);
     });
 
     document.querySelectorAll("[data-filter]").forEach((button) => {
       button.addEventListener("click", () => {
         const cat = button.dataset.filter;
+        const current = shots.find((shot) => shot.getAttribute("aria-current") === "true");
         document.querySelectorAll("[data-filter]").forEach((item) => {
           item.setAttribute("aria-pressed", String(item === button));
         });
         shots.forEach((shot) => {
           shot.hidden = cat !== "todas" && shot.dataset.cat !== cat;
         });
-        if (dialog.open) dialog.close();
+        const next = visibleShots().indexOf(current);
+        show(next === -1 ? 0 : next);
       });
     });
   </script>
