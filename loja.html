@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=3">
+  <link rel="stylesheet" href="css/styles.css?v=4">
 </head>
 <body>
   <a class="skip" href="#conteudo">Ir para o conteúdo</a>
@@ -39,25 +39,28 @@
         <p class="kicker">A loja</p>
         <div class="section-head">
           <h1>O espaço, de perto.</h1>
-          <p>Uma foto de cada vez. Use as setas ou toque numa miniatura.</p>
+          <p>Uma foto ou um vídeo de cada vez. Use as setas ou toque numa miniatura.</p>
         </div>
         <div class="chips" role="group" aria-label="Filtrar fotos">
           <button class="chip" type="button" data-filter="todas" aria-pressed="true">Todas</button>
           <button class="chip" type="button" data-filter="loja" aria-pressed="false">Loja</button>
           <button class="chip" type="button" data-filter="vitrine" aria-pressed="false">Vitrine</button>
           <button class="chip" type="button" data-filter="detalhes" aria-pressed="false">Detalhes</button>
+          <button class="chip" type="button" data-filter="abertura" aria-pressed="false">Abertura</button>
+          <button class="chip" type="button" data-filter="video" aria-pressed="false">Vídeos</button>
         </div>
         <div class="viewer">
           <div class="viewer-stage">
-            <button class="photo-nav prev" type="button" data-prev aria-label="Foto anterior"></button>
+            <button class="photo-nav prev" type="button" data-prev aria-label="Anterior"></button>
             <figure>
               <img data-main src="assets/loja/entrada.jpg" alt="Entrada da ótica, com o letreiro 404 e os bustos coloridos">
+              <video data-player controls playsinline preload="none" hidden></video>
               <figcaption>
                 <span data-caption>Entrada da ótica, com o letreiro 404 e os bustos coloridos</span>
-                <span data-count>1 de 40</span>
+                <span data-count>1 de 73</span>
               </figcaption>
             </figure>
-            <button class="photo-nav next" type="button" data-next aria-label="Próxima foto"></button>
+            <button class="photo-nav next" type="button" data-next aria-label="Próxima"></button>
           </div>
           <div class="thumbs" id="galeria">
           <button class="shot" type="button" data-cat="loja" aria-current="true"><img src="assets/loja/entrada.jpg" alt="Entrada da ótica, com o letreiro 404 e os bustos coloridos" decoding="async"></button>
@@ -102,6 +105,42 @@
           <button class="shot" type="button" data-cat="detalhes"><img src="assets/loja/estojos-lente.jpg" alt="Estojos de lente de contato embalados" loading="lazy" decoding="async"></button>
           <button class="shot" type="button" data-cat="detalhes"><img src="assets/loja/flanelas.jpg" alt="Flanelas embaladas, com a estampa for Me" loading="lazy" decoding="async"></button>
           <button class="shot" type="button" data-cat="detalhes"><img src="assets/loja/equipamento.jpg" alt="Equipamento de exame na mesa da ótica" loading="lazy" decoding="async"></button>
+
+          <button class="shot" type="button" data-cat="loja"><img src="assets/loja/grade.jpg" alt="Portão da ótica, com a loja ao fundo" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-cat="loja"><img src="assets/loja/corredor.jpg" alt="Corredor da loja, com os pedestais e a luminária" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-cat="loja"><img src="assets/loja/montagem.jpg" alt="Prateleiras sendo montadas para a abertura" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-cat="loja"><img src="assets/loja/nichos-parede.jpg" alt="Nichos de madeira na parede da loja" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-cat="loja"><img src="assets/loja/corredor-festa.jpg" alt="Corredor da loja no dia da abertura" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-cat="vitrine"><img src="assets/loja/busto-barba.jpg" alt="Óculos escuros num busto de barba" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-cat="vitrine"><img src="assets/loja/busto-lente-amarela.jpg" alt="Busto branco com lentes amarelas" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-cat="vitrine"><img src="assets/loja/nicho-oval.jpg" alt="Óculos oval no nicho de madeira" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-cat="vitrine"><img src="assets/loja/mesa-bustos.jpg" alt="Bustos coloridos e armações sobre a mesa" loading="lazy" decoding="async"></button>
+
+          <button class="shot" type="button" data-cat="abertura"><img src="assets/loja/balao-rosa.jpg" alt="Criança de óculos vermelhos, com o balão rosa" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-cat="abertura"><img src="assets/loja/criancas-porta.jpg" alt="As crianças na porta, durante a montagem" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-cat="abertura"><img src="assets/loja/equipe-balao.jpg" alt="Criança de óculos espelhados, com a equipe" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-cat="abertura"><img src="assets/loja/selfie-bebe.jpg" alt="Selfie com o bebê, na frente da ótica" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-cat="abertura"><img src="assets/loja/bebe-azul.jpg" alt="Bebê experimentando a armação azul" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-cat="abertura"><img src="assets/loja/selfie-grupo.jpg" alt="Família e equipe, com as prateleiras ao fundo" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-cat="abertura"><img src="assets/loja/trio.jpg" alt="Três da equipe, no canto da loja" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-cat="abertura"><img src="assets/loja/fita.jpg" alt="Ajuste do carpete na abertura" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-cat="abertura"><img src="assets/loja/na-porta.jpg" alt="Conversa na porta da loja" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-cat="abertura"><img src="assets/loja/equipe-prateleira.jpg" alt="Três da equipe, na frente das prateleiras" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-cat="abertura"><img src="assets/loja/brinde.jpg" alt="Brinde na abertura, com as lentes laranja" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-cat="abertura"><img src="assets/loja/perfil-dourado.jpg" alt="Armação dourada no rosto" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-cat="abertura"><img src="assets/loja/cachorro.jpg" alt="O cachorro de óculos escuros" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-cat="abertura"><img src="assets/loja/grupo-abertura.jpg" alt="Foto da abertura da ótica" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-cat="abertura"><img src="assets/loja/equipe-entrada.jpg" alt="Equipe na entrada da loja" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-cat="abertura"><img src="assets/loja/salgadinhos.jpg" alt="Mesa de salgadinhos da abertura" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-cat="abertura"><img src="assets/loja/cachorro-sacola.jpg" alt="O cachorro com a sacola de óculos" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-cat="abertura"><img src="assets/loja/sacola.jpg" alt="Sacola da ótica no dia da abertura" loading="lazy" decoding="async"></button>
+
+          <button class="shot" type="button" data-cat="video" data-video="assets/loja/video-portao.mp4"><img src="assets/loja/video-portao.jpg" alt="Vídeo do portão, com a loja ao fundo" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-cat="video" data-video="assets/loja/video-lentes.mp4"><img src="assets/loja/video-lentes.jpg" alt="Vídeo experimentando as lentes laranja" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-cat="video" data-video="assets/loja/video-busto-amarelo.mp4"><img src="assets/loja/video-busto-amarelo.jpg" alt="Vídeo do busto branco com lentes amarelas" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-cat="video" data-video="assets/loja/video-bustos.mp4"><img src="assets/loja/video-bustos.jpg" alt="Vídeo dos bustos e das armações na mesa" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-cat="video" data-video="assets/loja/video-nicho.mp4"><img src="assets/loja/video-nicho.jpg" alt="Vídeo do nicho de madeira com o óculos oval" loading="lazy" decoding="async"></button>
+          <button class="shot" type="button" data-cat="video" data-video="assets/loja/video-espelho.mp4"><img src="assets/loja/video-espelho.jpg" alt="Vídeo do espelho na entrada da loja" loading="lazy" decoding="async"></button>
           </div>
         </div>
         <div class="actions">
@@ -156,7 +195,9 @@
   <script src="js/site.js" defer></script>
   <script>
     const shots = [...document.querySelectorAll(".shot")];
+    const stage = document.querySelector(".viewer-stage");
     const main = document.querySelector("[data-main]");
+    const player = document.querySelector("[data-player]");
     const caption = document.querySelector("[data-caption]");
     const count = document.querySelector("[data-count]");
     let index = 0;
@@ -169,13 +210,30 @@
       const list = visibleShots();
       if (!list.length) return;
       index = (next + list.length) % list.length;
-      const img = list[index].querySelector("img");
-      main.src = img.currentSrc || img.src;
-      main.alt = img.alt;
+      const thumb = list[index];
+      const img = thumb.querySelector("img");
       caption.textContent = img.alt;
       count.textContent = (index + 1) + " de " + list.length;
+      player.pause();
+      if (thumb.dataset.video) {
+        main.hidden = true;
+        player.hidden = false;
+        stage.classList.add("is-video");
+        if (player.dataset.src !== thumb.dataset.video) {
+          player.dataset.src = thumb.dataset.video;
+          player.poster = img.currentSrc || img.src;
+          player.src = thumb.dataset.video;
+        }
+      } else {
+        player.removeAttribute("src");
+        delete player.dataset.src;
+        player.hidden = true;
+        main.hidden = false;
+        stage.classList.remove("is-video");
+        main.src = img.currentSrc || img.src;
+        main.alt = img.alt;
+      }
       shots.forEach((shot) => shot.removeAttribute("aria-current"));
-      const thumb = list[index];
       thumb.setAttribute("aria-current", "true");
       const rail = thumb.parentElement;
       const delta = thumb.getBoundingClientRect().left - rail.getBoundingClientRect().left;

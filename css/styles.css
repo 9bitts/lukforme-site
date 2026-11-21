@@ -711,12 +711,18 @@ input:-webkit-autofill {
   align-items: center;
   justify-content: center;
 }
-.viewer-stage img {
+.viewer-stage img,
+.viewer-stage video {
   max-width: 100%;
   max-height: 100%;
   width: auto;
   height: auto;
   object-fit: contain;
+  background: #000;
+}
+.viewer-stage.is-video video {
+  max-height: calc(100% - 64px);
+  margin-bottom: 48px;
 }
 .viewer-stage figcaption {
   position: absolute;
@@ -746,6 +752,7 @@ input:-webkit-autofill {
   scroll-snap-type: x proximity;
 }
 .shot {
+  position: relative;
   flex: 0 0 84px;
   width: 84px;
   height: 84px;
@@ -758,6 +765,17 @@ input:-webkit-autofill {
   cursor: pointer;
   scroll-snap-align: start;
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+.shot[data-video]::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin: -8px 0 0 -5px;
+  border-style: solid;
+  border-width: 8px 0 8px 13px;
+  border-color: transparent transparent transparent #fff;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.65));
 }
 .shot[hidden] { display: none; }
 .shot img {
