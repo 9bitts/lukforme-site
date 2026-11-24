@@ -180,11 +180,24 @@ function openProduct(product) {
   note.textContent = product.note
     ? "Este modelo está em falta no momento. Peça para avisar quando voltar."
     : onSale(product)
-      ? "Black November até 30/11: 20% nesta armação. No WhatsApp, envie a foto da receita e uma foto de frente. A lente é orçada em seguida."
-      : "Valor da armação. No WhatsApp, envie a foto da receita e uma foto de frente. A lente é orçada em seguida.";
+      ? "Black November até 30/11: 20% nesta armação. O pagamento é só da armação. Depois, no WhatsApp, envie a foto da receita e uma foto de frente."
+      : "O pagamento é só da armação. Depois, no WhatsApp, envie a foto da receita e uma foto de frente. A lente é orçada em seguida.";
   link.dataset.product = product.id;
   link.href = waHref(productText(product));
-  link.textContent = product.note ? "Avisar quando chegar" : onSale(product) ? "Pedir com 20%" : "Pedir no WhatsApp";
+  link.textContent = product.note ? "Avisar quando chegar" : "Pedir no WhatsApp";
+  link.className = product.note ? "btn btn-dark" : "btn btn-line";
+  const pay = dialog.querySelector("[data-pay]");
+  const payStatus = dialog.querySelector("[data-pay-status]");
+  if (pay) {
+    pay.hidden = Boolean(product.note);
+    pay.disabled = false;
+    pay.textContent = onSale(product) ? "Pagar com 20%" : "Pagar a armação";
+  }
+  if (payStatus) {
+    payStatus.hidden = true;
+    payStatus.textContent = "";
+  }
+  dialog.dataset.product = product.id;
   if (!dialog.open) dialog.showModal();
 }
 
@@ -396,9 +409,51 @@ function initForms() {
   });
 }
 
+function checkoutUrl(value) {
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" && /(^|\.)infinitepay\.io$/i.test(url.hostname);
+  } catch {
+    return false;
+  }
+}
+
+async function startCheckout(product, button, status) {
+  const variant = selectedVariant(product);
+  button.disabled = true;
+  status.hidden = false;
+  status.textContent = "Abrindo o pagamento…";
+  try {
+    const response = await fetch("/api/checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code: product.code, color: variant ? variant.name : "" })
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok || !checkoutUrl(data.url)) {
+      status.textContent = data.error || "Não foi possível abrir o pagamento. Tente de novo ou peça no WhatsApp.";
+      button.disabled = false;
+      return;
+    }
+    location.href = data.url;
+  } catch {
+    status.textContent = "Sem conexão com o pagamento. Tente de novo ou peça no WhatsApp.";
+    button.disabled = false;
+  }
+}
+
 function initDialog() {
   const dialog = document.getElementById("product-dialog");
   if (!dialog) return;
+  const pay = dialog.querySelector("[data-pay]");
+  const payStatus = dialog.querySelector("[data-pay-status]");
+  if (pay && payStatus) {
+    pay.addEventListener("click", () => {
+      const product = catalog.find((item) => item.id === dialog.dataset.product);
+      if (!product || pay.disabled) return;
+      startCheckout(product, pay, payStatus);
+    });
+  }
   const figure = dialog.querySelector("[data-figure]");
   dialog.querySelectorAll("[data-close]").forEach((button) => {
     button.addEventListener("click", () => dialog.close());
@@ -506,6 +561,94 @@ function initCampaign() {
   dialog.showModal();
 }
 
+function brlFromCents(cents) {
+  return brl(Number(cents || 0) / 100);
+}
+
+function methodLabel(method) {
+  if (method === "pix") return "Pix";
+  if (method === "credit_card") return "cartão";
+  return "InfinitePay";
+}
+
+function initOrder() {
+  const title = document.querySelector("[data-order-title]");
+  if (!title) return;
+  const copy = document.querySelector("[data-order-copy]");
+  const amount = document.querySelector("[data-order-amount]");
+  const actions = document.querySelector("[data-order-actions]");
+  const wa = document.querySelector("[data-order-wa]");
+  const receipt = document.querySelector("[data-order-receipt]");
+  const params = new URLSearchParams(location.search);
+  const orderNsu = params.get("order_nsu") || "";
+  const transactionNsu = params.get("transaction_nsu") || "";
+  const slug = params.get("slug") || "";
+  const receiptUrl = params.get("receipt_url") || "";
+
+  function showPending(message) {
+    title.textContent = "Pagamento ainda não confirmado";
+    copy.textContent = message;
+  }
+
+  if (!orderNsu || !transactionNsu || !slug) {
+    title.textContent = "Pedido";
+    copy.textContent = "Esta página confirma o pagamento de uma armação feito pelo site. Escolha o modelo na coleção para pagar.";
+    actions.hidden = false;
+    wa.href = "/colecao";
+    wa.textContent = "Ver a coleção";
+    return;
+  }
+
+  async function confirm(attempt) {
+    try {
+      const response = await fetch("/api/pagamento", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          orderNsu,
+          transactionNsu,
+          slug,
+          receiptUrl
+        })
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        showPending(data.error || "Não consegui confirmar agora. Atualize a página em instantes.");
+        return;
+      }
+      if (!data.paid) {
+        if (attempt < 3) {
+          setTimeout(() => confirm(attempt + 1), 2000);
+          return;
+        }
+        showPending("A InfinitePay ainda não marcou este pagamento como aprovado. Se você acabou de pagar, aguarde e atualize a página.");
+        return;
+      }
+      const piece = data.description || `armação ${data.code || ""}`.trim();
+      const paid = brlFromCents(data.cents);
+      title.textContent = "Pagamento confirmado";
+      copy.textContent = `${piece} ${paid ? `· ${paid}` : ""} via ${methodLabel(data.method)}. A lente ainda não está incluída. Envie a receita no WhatsApp para o orçamento.`;
+      if (data.cents) {
+        amount.hidden = false;
+        amount.textContent = paid;
+      }
+      actions.hidden = false;
+      const message = `Olá, Luk for Me. Paguei a armação ${piece}${paid ? `, ${paid}` : ""}. Pedido ${orderNsu}. Vou enviar a foto da receita e uma foto de frente.`;
+      wa.href = waHref(message);
+      wa.target = "_blank";
+      wa.rel = "noopener noreferrer";
+      if (typeof data.receiptUrl === "string" && data.receiptUrl.startsWith("https://")) {
+        receipt.hidden = false;
+        receipt.href = data.receiptUrl;
+      }
+    } catch {
+      showPending("Sem conexão para confirmar o pagamento. Atualize a página.");
+    }
+  }
+
+  confirm(1);
+}
+
 document.getElementById("ano") && (document.getElementById("ano").textContent = String(new Date().getFullYear()));
 initNav();
 initCounts();
@@ -514,3 +657,4 @@ initCatalog();
 initForms();
 initDialog();
 initCampaign();
+initOrder();

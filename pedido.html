@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pedido · Luk for Me</title>
+  <meta name="description" content="Confirmação do pagamento da armação na Luk for Me.">
+  <meta name="theme-color" content="#07070c">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css?v=7">
+</head>
+<body>
+  <a class="skip" href="#conteudo">Ir para o conteúdo</a>
+  <p class="topbar">Armação com preço · Lente sob receita · Frete grátis acima de R$ 800</p>
+  <header class="site-header">
+    <a class="logo" href="/" aria-label="Luk for Me, início">
+      <img src="assets/logo.png" alt="">
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="sr-only">Abrir menu</span>
+      <span class="burger"></span>
+    </button>
+    <nav id="site-nav" class="site-nav" aria-label="Seções">
+      <a href="/colecao">Coleção</a>
+      <a href="/lentes">Lentes</a>
+      <a href="/loja">Loja</a>
+      <a href="/#materiais">Materiais</a>
+      <a href="/garantia">Garantia</a>
+      <a class="nav-wa" href="https://wa.me/5531996930611?text=Ol%C3%A1%2C%20Luk%20for%20Me.%20Vim%20pelo%20site.">WhatsApp</a>
+    </nav>
+    <a class="header-wa" href="https://wa.me/5531996930611?text=Ol%C3%A1%2C%20Luk%20for%20Me.%20Vim%20pelo%20site.">WhatsApp</a>
+  </header>
+
+  <main id="conteudo">
+    <section class="page-intro">
+      <div class="wrap">
+        <p class="kicker">Pedido</p>
+        <h1 data-order-title>Confirmando o pagamento…</h1>
+        <p class="lede" data-order-copy>Estamos consultando a InfinitePay.</p>
+        <p class="price" data-order-amount hidden></p>
+        <div class="actions" data-order-actions hidden>
+          <a class="btn btn-dark" data-order-wa href="https://wa.me/5531996930611">Enviar a receita no WhatsApp</a>
+          <a class="btn btn-line" data-order-receipt href="" hidden target="_blank" rel="noopener noreferrer">Ver comprovante</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap legal">
+      <span>© <span id="ano">2026</span> Luk for Me</span>
+      <span>O pagamento desta página é só da armação. A lente segue sob receita.</span>
+    </div>
+  </footer>
+
+  <script src="js/site.js?v=8" defer></script>
+</body>
+</html>

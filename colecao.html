@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=6">
+  <link rel="stylesheet" href="css/styles.css?v=7">
 </head>
 <body>
   <a class="skip" href="#conteudo">Ir para o conteúdo</a>
@@ -40,7 +40,7 @@
         <p class="kicker">Coleção Caili + Luk</p>
         <div class="section-head">
           <h1>Todos os modelos.</h1>
-          <p>Preço da armação. Toque no modelo, escolha a cor e peça no WhatsApp com a foto da receita e uma foto de frente. Ateliê, Heritage e Studio entram com as cores que estão na loja.</p>
+          <p>Preço da armação. Toque no modelo, escolha a cor e pague a armação no site. A lente segue no WhatsApp, com a foto da receita e uma foto de frente.</p>
           <p data-campaign hidden>Black November: 20% em qualquer armação à venda, até 30/11. O valor riscado é o preço cheio.</p>
         </div>
         <div class="toolbar">
@@ -121,12 +121,16 @@
         <p data-meta></p>
         <p class="price" data-price></p>
         <p data-note></p>
-        <a class="btn btn-dark" data-wa href="https://wa.me/5531996930611">Pedir no WhatsApp</a>
+        <div class="dialog-actions">
+          <button class="btn btn-dark" type="button" data-pay>Pagar a armação</button>
+          <a class="btn btn-line" data-wa href="https://wa.me/5531996930611">Pedir no WhatsApp</a>
+        </div>
+        <p class="pay-status" data-pay-status hidden></p>
       </div>
     </div>
   </dialog>
 
   <script src="js/catalog-data.js?v=6" defer></script>
-  <script src="js/site.js?v=7" defer></script>
+  <script src="js/site.js?v=8" defer></script>
 </body>
 </html>

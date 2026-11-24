@@ -939,6 +939,11 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.72); }
 }
 .product-dialog.is-zoomed img { max-height: calc(100dvh - 3rem); }
 .dialog-copy { padding: 2rem 3.2rem 1.6rem 1.6rem; }
+.dialog-actions { display: flex; flex-direction: column; gap: 0.65rem; margin-top: 1.15rem; }
+.dialog-actions .btn { width: 100%; }
+.btn[hidden], .pay-status[hidden], .actions[hidden], .price[hidden] { display: none; }
+.btn:disabled { opacity: 0.55; cursor: wait; transform: none; }
+.pay-status { margin: 0.75rem 0 0; color: var(--text-dimmer); font-size: 0.9rem; }
 .dialog-copy p:not(.kicker):not(.price) { color: var(--text-dim); font-weight: 300; }
 .face-grid {
   display: grid;

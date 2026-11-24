@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="preload" as="image" href="assets/editorial/hero-modelo.jpg">
-  <link rel="stylesheet" href="css/styles.css?v=6">
+  <link rel="stylesheet" href="css/styles.css?v=7">
 </head>
 <body>
   <a class="skip" href="#conteudo">Ir para o conteúdo</a>
@@ -284,7 +284,7 @@
         <div>
           <p class="kicker">Contato</p>
           <h2>Escolha o modelo. A gente cuida da lente.</h2>
-          <p>No WhatsApp, envie a foto da receita e uma foto de frente. O preço da armação já está no site. A lente entra no orçamento em seguida.</p>
+          <p>Pague a armação no site. No WhatsApp, envie a foto da receita e uma foto de frente. A lente entra no orçamento em seguida.</p>
         </div>
         <ul class="contact-list">
           <li>
@@ -358,12 +358,16 @@
         <p data-meta></p>
         <p class="price" data-price></p>
         <p data-note></p>
-        <a class="btn btn-dark" data-wa href="https://wa.me/5531996930611">Pedir no WhatsApp</a>
+        <div class="dialog-actions">
+          <button class="btn btn-dark" type="button" data-pay>Pagar a armação</button>
+          <a class="btn btn-line" data-wa href="https://wa.me/5531996930611">Pedir no WhatsApp</a>
+        </div>
+        <p class="pay-status" data-pay-status hidden></p>
       </div>
     </div>
   </dialog>
 
   <script src="js/catalog-data.js?v=6" defer></script>
-  <script src="js/site.js?v=7" defer></script>
+  <script src="js/site.js?v=8" defer></script>
 </body>
 </html>
