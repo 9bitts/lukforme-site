@@ -480,8 +480,8 @@ function initCampaign() {
   link.target = "_blank";
   link.rel = "noopener noreferrer";
   const img = el("img");
-  img.src = "assets/campanha/black-november.jpg";
-  img.alt = "Black November. 20% nas armações. Qualquer modelo da loja até 30 de novembro.";
+  img.src = "assets/campanha/black-november.jpg?v=2";
+  img.alt = "Black Friday. 20% nas armações. Qualquer modelo da loja até 30 de novembro.";
   link.append(img, el("span", "btn btn-dark", "Quero essa promoção"));
   dialog.append(close, link);
   document.body.append(dialog);

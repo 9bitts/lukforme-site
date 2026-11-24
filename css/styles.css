@@ -1110,7 +1110,7 @@ dialog.campaign-dialog {
   width: 100%;
   max-height: calc(100dvh - 8.5rem);
   object-fit: cover;
-  object-position: center 18%;
+  object-position: center 42%;
   border-radius: 18px;
 }
 .campaign-dialog .close-btn {
