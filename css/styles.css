@@ -1004,6 +1004,10 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.72); }
     grid-template-columns: 1fr;
   }
   .product-grid { grid-template-columns: 1fr 1fr; }
+  .campaign-home, .offer-grid { grid-template-columns: 1fr; }
+  .contact-row { grid-template-columns: minmax(0, 1fr) auto; }
+  .contact-row b { grid-column: 1; }
+  .contact-row a { grid-column: 2; grid-row: 1 / span 2; }
   .nav-wa { display: flex; }
   .logo img { height: 50px; }
   .lookbook figure { aspect-ratio: 4 / 5; }
@@ -1047,6 +1051,118 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.72); }
   .logo img { height: 46px; }
   .topbar { letter-spacing: 0.02em; font-size: 0.68rem; line-height: 1.45; }
   .dialog-grid figure { min-height: 240px; }
+}
+
+.price-was {
+  display: block;
+  margin-bottom: 0.12rem;
+  color: var(--text-dimmer);
+  font-size: 0.78em;
+  font-weight: 500;
+  text-decoration: line-through;
+}
+.price-now { display: block; }
+.badge-sale {
+  background: var(--accent);
+  color: #07070c;
+  font-weight: 600;
+}
+.topbar a { color: inherit; }
+.topbar-campaign {
+  background: #14110c;
+  color: #e4c99a;
+}
+body.is-campaign .off-campaign { display: none; }
+
+.campaign-home {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.72fr) minmax(0, 1.1fr);
+  gap: 2rem;
+  align-items: center;
+}
+.campaign-home img {
+  width: 100%;
+  border-radius: calc(var(--radius) + 4px);
+}
+.campaign-copy h2 {
+  margin: 0 0 0.7rem;
+  font-size: clamp(2rem, 4vw, 3.1rem);
+  line-height: 1.08;
+}
+.campaign-copy p { margin: 0; max-width: 36rem; color: var(--text-dim); font-weight: 300; }
+
+dialog.campaign-dialog {
+  width: min(420px, calc(100vw - 1.5rem));
+  max-height: calc(100dvh - 1.5rem);
+  margin: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  overflow: auto;
+}
+.campaign-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.campaign-card img {
+  width: 100%;
+  max-height: calc(100dvh - 8.5rem);
+  object-fit: cover;
+  object-position: center 18%;
+  border-radius: 18px;
+}
+.campaign-dialog .close-btn {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  z-index: 2;
+}
+.campaign-dialog .btn { width: 100%; }
+
+.offer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.offer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.7rem;
+  padding: 1.25rem 1.3rem 1.35rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.offer h3 { margin: 0; font-size: 1.25rem; }
+.offer p { margin: 0; color: var(--text-dim); font-weight: 300; }
+.offer .btn { margin-top: auto; }
+.contact-block { margin-top: 2.4rem; }
+.contact-block ul { list-style: none; margin: 0; padding: 0; }
+.contact-block h3 {
+  margin: 0 0 0.3rem;
+  font-size: 1.15rem;
+}
+.contact-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 0.8rem 1rem;
+  align-items: center;
+  padding: 0.72rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.contact-row span { color: var(--text); }
+.contact-row b {
+  font-family: var(--display);
+  font-weight: 600;
+  color: var(--accent);
+}
+.contact-row a {
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: 600;
 }
 
 @media (prefers-reduced-motion: reduce) {

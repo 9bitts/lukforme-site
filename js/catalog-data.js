@@ -1,5 +1,415 @@
 window.LUK_CATALOG = [
   {
+    "id": "SOLARSTUDIOCL7106",
+    "category": "Solar",
+    "group": "Solar",
+    "line": "Studio",
+    "code": "CL7106",
+    "price": 399,
+    "priceLabel": "R$ 399,00",
+    "note": "",
+    "size": "52-19-145",
+    "colors": 1,
+    "image": "assets/cores/cl7106/c2.jpg",
+    "variants": [
+      {
+        "name": "C2",
+        "image": "assets/cores/cl7106/c2.jpg",
+        "color": "#626f5e"
+      }
+    ]
+  },
+  {
+    "id": "SOLARSTUDIOCL7107",
+    "category": "Solar",
+    "group": "Solar",
+    "line": "Studio",
+    "code": "CL7107",
+    "price": 399,
+    "priceLabel": "R$ 399,00",
+    "note": "",
+    "size": "52-17-140",
+    "colors": 2,
+    "image": "assets/cores/cl7107/c1.jpg",
+    "variants": [
+      {
+        "name": "C1",
+        "image": "assets/cores/cl7107/c1.jpg",
+        "color": "#c1a171"
+      },
+      {
+        "name": "C3",
+        "image": "assets/cores/cl7107/c3.jpg",
+        "color": "#62606a"
+      }
+    ]
+  },
+  {
+    "id": "SOLARSTUDIOCL7110",
+    "category": "Solar",
+    "group": "Solar",
+    "line": "Studio",
+    "code": "CL7110",
+    "price": 399,
+    "priceLabel": "R$ 399,00",
+    "note": "",
+    "size": "54-17-145",
+    "colors": 2,
+    "image": "assets/cores/cl7110/c1.jpg",
+    "variants": [
+      {
+        "name": "C1",
+        "image": "assets/cores/cl7110/c1.jpg",
+        "color": "#605f5d"
+      },
+      {
+        "name": "C4",
+        "image": "assets/cores/cl7110/c4.jpg",
+        "color": "#936a3e"
+      }
+    ]
+  },
+  {
+    "id": "SOLARSTUDIOCL7111",
+    "category": "Solar",
+    "group": "Solar",
+    "line": "Studio",
+    "code": "CL7111",
+    "price": 399,
+    "priceLabel": "R$ 399,00",
+    "note": "",
+    "size": "",
+    "colors": 2,
+    "image": "assets/cores/cl7111/c1.jpg",
+    "variants": [
+      {
+        "name": "C1",
+        "image": "assets/cores/cl7111/c1.jpg",
+        "color": "#4d4d4b"
+      },
+      {
+        "name": "C2",
+        "image": "assets/cores/cl7111/c2.jpg",
+        "color": "#625653"
+      }
+    ]
+  },
+  {
+    "id": "SOLARATELIECA7701",
+    "category": "Solar",
+    "group": "Solar",
+    "line": "Ateliê",
+    "code": "CA7701",
+    "price": 499,
+    "priceLabel": "R$ 499,00",
+    "note": "",
+    "size": "55-19-145",
+    "colors": 1,
+    "image": "assets/cores/ca7701/c2.jpg",
+    "variants": [
+      {
+        "name": "C2",
+        "image": "assets/cores/ca7701/c2.jpg",
+        "color": "#5e766e"
+      }
+    ]
+  },
+  {
+    "id": "SOLARATELIECA7702",
+    "category": "Solar",
+    "group": "Solar",
+    "line": "Ateliê",
+    "code": "CA7702",
+    "price": 499,
+    "priceLabel": "R$ 499,00",
+    "note": "",
+    "size": "",
+    "colors": 2,
+    "image": "assets/cores/ca7702/c1.jpg",
+    "variants": [
+      {
+        "name": "C1",
+        "image": "assets/cores/ca7702/c1.jpg",
+        "color": "#62737f"
+      },
+      {
+        "name": "C2",
+        "image": "assets/cores/ca7702/c2.jpg",
+        "color": "#654426"
+      }
+    ]
+  },
+  {
+    "id": "SOLARATELIECA7703",
+    "category": "Solar",
+    "group": "Solar",
+    "line": "Ateliê",
+    "code": "CA7703",
+    "price": 499,
+    "priceLabel": "R$ 499,00",
+    "note": "",
+    "size": "",
+    "colors": 1,
+    "image": "assets/cores/ca7703/c1.jpg",
+    "variants": [
+      {
+        "name": "C1",
+        "image": "assets/cores/ca7703/c1.jpg",
+        "color": "#2d343d"
+      }
+    ]
+  },
+  {
+    "id": "SOLARATELIECA7705",
+    "category": "Solar",
+    "group": "Solar",
+    "line": "Ateliê",
+    "code": "CA7705",
+    "price": 499,
+    "priceLabel": "R$ 499,00",
+    "note": "",
+    "size": "",
+    "colors": 1,
+    "image": "assets/cores/ca7705/c2.jpg",
+    "variants": [
+      {
+        "name": "C2",
+        "image": "assets/cores/ca7705/c2.jpg",
+        "color": "#a68e5d"
+      }
+    ]
+  },
+  {
+    "id": "SOLARATELIECA7707",
+    "category": "Solar",
+    "group": "Solar",
+    "line": "Ateliê",
+    "code": "CA7707",
+    "price": 499,
+    "priceLabel": "R$ 499,00",
+    "note": "",
+    "size": "",
+    "colors": 2,
+    "image": "assets/cores/ca7707/c1.jpg",
+    "variants": [
+      {
+        "name": "C1",
+        "image": "assets/cores/ca7707/c1.jpg",
+        "color": "#454f59"
+      },
+      {
+        "name": "C3",
+        "image": "assets/cores/ca7707/c3.jpg",
+        "color": "#858e9e"
+      }
+    ]
+  },
+  {
+    "id": "SOLARATELIECA7708",
+    "category": "Solar",
+    "group": "Solar",
+    "line": "Ateliê",
+    "code": "CA7708",
+    "price": 499,
+    "priceLabel": "R$ 499,00",
+    "note": "",
+    "size": "",
+    "colors": 2,
+    "image": "assets/cores/ca7708/c1.jpg",
+    "variants": [
+      {
+        "name": "C1",
+        "image": "assets/cores/ca7708/c1.jpg",
+        "color": "#43515c"
+      },
+      {
+        "name": "C2",
+        "image": "assets/cores/ca7708/c2.jpg",
+        "color": "#694f3d"
+      }
+    ]
+  },
+  {
+    "id": "SOLARATELIECA7804",
+    "category": "Solar",
+    "group": "Solar",
+    "line": "Ateliê",
+    "code": "CA7804",
+    "price": 499,
+    "priceLabel": "R$ 499,00",
+    "note": "",
+    "size": "",
+    "colors": 3,
+    "image": "assets/cores/ca7804/c1.jpg",
+    "variants": [
+      {
+        "name": "C1",
+        "image": "assets/cores/ca7804/c1.jpg",
+        "color": "#2b4969"
+      },
+      {
+        "name": "C2",
+        "image": "assets/cores/ca7804/c2.jpg",
+        "color": "#776d57"
+      },
+      {
+        "name": "C3",
+        "image": "assets/cores/ca7804/c3.jpg",
+        "color": "#374b40"
+      }
+    ]
+  },
+  {
+    "id": "SOLARHERITAGESHA089",
+    "category": "Solar",
+    "group": "Solar",
+    "line": "Heritage",
+    "code": "SHA089",
+    "price": 799,
+    "priceLabel": "R$ 799,00",
+    "note": "",
+    "size": "55-15-145",
+    "colors": 2,
+    "image": "assets/cores/sha089/c3.jpg",
+    "variants": [
+      {
+        "name": "C3",
+        "image": "assets/cores/sha089/c3.jpg",
+        "color": "#e2e2e2"
+      },
+      {
+        "name": "C4",
+        "image": "assets/cores/sha089/c4.jpg",
+        "color": "#e5e5e5"
+      }
+    ],
+    "name": "Diamante"
+  },
+  {
+    "id": "SOLARHERITAGESHA090",
+    "category": "Solar",
+    "group": "Solar",
+    "line": "Heritage",
+    "code": "SHA090",
+    "price": 799,
+    "priceLabel": "R$ 799,00",
+    "note": "",
+    "size": "50-22-145",
+    "colors": 3,
+    "image": "assets/cores/sha090/c1.jpg",
+    "variants": [
+      {
+        "name": "C1",
+        "image": "assets/cores/sha090/c1.jpg",
+        "color": "#e8e0d9"
+      },
+      {
+        "name": "C3",
+        "image": "assets/cores/sha090/c3.jpg",
+        "color": "#bfbebf"
+      },
+      {
+        "name": "C4",
+        "image": "assets/cores/sha090/c4.jpg",
+        "color": "#e6e6e6"
+      }
+    ],
+    "name": "Bosco"
+  },
+  {
+    "id": "SOLARHERITAGESHA092",
+    "category": "Solar",
+    "group": "Solar",
+    "line": "Heritage",
+    "code": "SHA092",
+    "price": 799,
+    "priceLabel": "R$ 799,00",
+    "note": "",
+    "size": "52-17-145",
+    "colors": 3,
+    "image": "assets/cores/sha092/c2.jpg",
+    "variants": [
+      {
+        "name": "C2",
+        "image": "assets/cores/sha092/c2.jpg",
+        "color": "#bb8d62"
+      },
+      {
+        "name": "C3",
+        "image": "assets/cores/sha092/c3.jpg",
+        "color": "#e5e5e4"
+      },
+      {
+        "name": "C4",
+        "image": "assets/cores/sha092/c4.jpg",
+        "color": "#dddcda"
+      }
+    ],
+    "name": "Collage"
+  },
+  {
+    "id": "SOLARHERITAGESSM047",
+    "category": "Solar",
+    "group": "Solar",
+    "line": "Heritage",
+    "code": "SSM047",
+    "price": 799,
+    "priceLabel": "R$ 799,00",
+    "note": "",
+    "size": "53-18-140",
+    "colors": 3,
+    "image": "assets/cores/ssm047/c1.jpg",
+    "variants": [
+      {
+        "name": "C1",
+        "image": "assets/cores/ssm047/c1.jpg",
+        "color": "#d1cfba"
+      },
+      {
+        "name": "C3",
+        "image": "assets/cores/ssm047/c3.jpg",
+        "color": "#e7ccc4"
+      },
+      {
+        "name": "C4",
+        "image": "assets/cores/ssm047/c4.jpg",
+        "color": "#bbbbc2"
+      }
+    ],
+    "name": "Zaha"
+  },
+  {
+    "id": "ACETATOATELIECA3011",
+    "category": "Acetato",
+    "group": "Acetato",
+    "line": "Ateliê",
+    "code": "CA3011",
+    "price": 699,
+    "priceLabel": "R$ 699,00",
+    "note": "",
+    "size": "49-21-145",
+    "colors": 3,
+    "image": "assets/cores/ca3011/c1.jpg",
+    "variants": [
+      {
+        "name": "C1",
+        "image": "assets/cores/ca3011/c1.jpg",
+        "color": "#b23600"
+      },
+      {
+        "name": "C2",
+        "image": "assets/cores/ca3011/c2.jpg",
+        "color": "#667c95"
+      },
+      {
+        "name": "C4",
+        "image": "assets/cores/ca3011/c4.jpg",
+        "color": "#b8b1b6"
+      }
+    ],
+    "name": "Apolo"
+  },
+  {
     "id": "ACETATOBQ23101",
     "category": "Acetato",
     "group": "Acetato",
@@ -2904,8 +3314,30 @@ window.LUK_CATALOG = [
     "priceLabel": "R$ 419,90",
     "note": "",
     "size": "",
-    "colors": 0,
-    "image": null
+    "colors": 4,
+    "image": "assets/cores/g5751/c2-preto.jpg",
+    "variants": [
+      {
+        "name": "C2 Preto",
+        "image": "assets/cores/g5751/c2-preto.jpg",
+        "color": "#2c2d2a"
+      },
+      {
+        "name": "C2 Transparente",
+        "image": "assets/cores/g5751/c2-transparente.jpg",
+        "color": "#8e8a85"
+      },
+      {
+        "name": "C3 Demi",
+        "image": "assets/cores/g5751/c3-demi.jpg",
+        "color": "#71340e"
+      },
+      {
+        "name": "C4 Azul",
+        "image": "assets/cores/g5751/c4-azul.jpg",
+        "color": "#6786ae"
+      }
+    ]
   },
   {
     "id": "ACETATOCLIPONMAGNOG5752",
@@ -2917,8 +3349,30 @@ window.LUK_CATALOG = [
     "priceLabel": "R$ 449,90",
     "note": "",
     "size": "",
-    "colors": 0,
-    "image": null
+    "colors": 4,
+    "image": "assets/cores/g5752/c1-preto.jpg",
+    "variants": [
+      {
+        "name": "C1 Preto",
+        "image": "assets/cores/g5752/c1-preto.jpg",
+        "color": "#080a0a"
+      },
+      {
+        "name": "C2 Demi",
+        "image": "assets/cores/g5752/c2-demi.jpg",
+        "color": "#a94a08"
+      },
+      {
+        "name": "C3 Cristal",
+        "image": "assets/cores/g5752/c3-cristal.jpg",
+        "color": "#aaaaa9"
+      },
+      {
+        "name": "C4 Verde",
+        "image": "assets/cores/g5752/c4-verde.jpg",
+        "color": "#3a3e2a"
+      }
+    ]
   },
   {
     "id": "ACETATOCLIPONMAGNOG5753",
@@ -2943,8 +3397,30 @@ window.LUK_CATALOG = [
     "priceLabel": "R$ 489,90",
     "note": "",
     "size": "",
-    "colors": 0,
-    "image": null
+    "colors": 4,
+    "image": "assets/cores/g5754/c1-preto.jpg",
+    "variants": [
+      {
+        "name": "C1 Preto",
+        "image": "assets/cores/g5754/c1-preto.jpg",
+        "color": "#060606"
+      },
+      {
+        "name": "C3 Demi",
+        "image": "assets/cores/g5754/c3-demi.jpg",
+        "color": "#946a5f"
+      },
+      {
+        "name": "C4 Cristal",
+        "image": "assets/cores/g5754/c4-cristal.jpg",
+        "color": "#313123"
+      },
+      {
+        "name": "C5 Verde",
+        "image": "assets/cores/g5754/c5-verde.jpg",
+        "color": "#575d7c"
+      }
+    ]
   },
   {
     "id": "ACETATOCLIPONMAGNOG5756",
@@ -2956,8 +3432,30 @@ window.LUK_CATALOG = [
     "priceLabel": "R$ 449,90",
     "note": "",
     "size": "",
-    "colors": 0,
-    "image": null
+    "colors": 4,
+    "image": "assets/cores/g5756/c1-preto.jpg",
+    "variants": [
+      {
+        "name": "C1 Preto",
+        "image": "assets/cores/g5756/c1-preto.jpg",
+        "color": "#1c1d1c"
+      },
+      {
+        "name": "C2 Cristal",
+        "image": "assets/cores/g5756/c2-cristal.jpg",
+        "color": "#96907d"
+      },
+      {
+        "name": "C4 Verde",
+        "image": "assets/cores/g5756/c4-verde.jpg",
+        "color": "#2c311e"
+      },
+      {
+        "name": "C5 Azul",
+        "image": "assets/cores/g5756/c5-azul.jpg",
+        "color": "#6e7386"
+      }
+    ]
   },
   {
     "id": "ACETATOCLIPONMAGNOG5768",
@@ -2969,8 +3467,30 @@ window.LUK_CATALOG = [
     "priceLabel": "R$ 519,90",
     "note": "",
     "size": "",
-    "colors": 0,
-    "image": null
+    "colors": 4,
+    "image": "assets/cores/g5768/c1-preto.jpg",
+    "variants": [
+      {
+        "name": "C1 Preto",
+        "image": "assets/cores/g5768/c1-preto.jpg",
+        "color": "#343733"
+      },
+      {
+        "name": "C2 Demi",
+        "image": "assets/cores/g5768/c2-demi.jpg",
+        "color": "#3a3939"
+      },
+      {
+        "name": "C3 Demi",
+        "image": "assets/cores/g5768/c3-demi.jpg",
+        "color": "#43382f"
+      },
+      {
+        "name": "C3 Demi claro",
+        "image": "assets/cores/g5768/c3-demi-claro.jpg",
+        "color": "#a24028"
+      }
+    ]
   },
   {
     "id": "FLEX360TRCLIPONYURINCL5102",

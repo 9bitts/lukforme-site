@@ -1,6 +1,9 @@
 const WA = "5531996930611";
 const GROUPS = ["Acetato", "Metal", "Flex 360°", "TR Comfort", "Solar", "Clip-on"];
-const FEATURED = ["CL3101", "My24001", "8779", "CL2601", "2701", "220603"];
+const FEATURED = ["CA7804", "SHA089", "SSM047", "CL3101", "My24001", "8779", "CL2601", "2701", "220603"];
+const CAMPAIGN_TEXT = "Olá, Luk for Me. Vi a Black November no site e quero a promoção de 20% nas armações.";
+const CAMPAIGN_END = Date.parse("2026-12-01T00:00:00-03:00");
+const DISMISS_KEY = "luk-black-november";
 
 const catalog = Array.isArray(window.LUK_CATALOG) ? window.LUK_CATALOG : [];
 
@@ -8,15 +11,52 @@ function brl(value) {
   return Number(value).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 }
 
+function campaignOn() {
+  return Date.now() < CAMPAIGN_END;
+}
+
+function salePrice(price) {
+  return Math.round(Math.round(Number(price) * 100) * 0.8) / 100;
+}
+
+function onSale(product) {
+  return campaignOn() && !product.note;
+}
+
+function payable(product) {
+  return onSale(product) ? salePrice(product.price) : product.price;
+}
+
+function todayKey() {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo" }).format(new Date());
+}
+
+function fillPrice(node, product) {
+  node.replaceChildren();
+  if (!onSale(product)) {
+    node.textContent = brl(product.price);
+    return;
+  }
+  node.append(
+    el("s", "price-was", brl(product.price)),
+    el("span", "price-now", brl(salePrice(product.price)))
+  );
+}
+
 function waHref(text) {
   return `https://wa.me/${WA}?text=${encodeURIComponent(text)}`;
 }
 
 function productText(product) {
-  const status = product.note ? ` (${product.note})` : "";
   const variant = selectedVariant(product);
   const color = variant ? `, cor ${variant.name}` : "";
-  return `Olá, Luk for Me. Quero a armação ${product.line} ${product.code} (${product.category})${color}, ${brl(product.price)}${status}. Vou enviar a foto da receita e uma foto de frente.`;
+  const title = product.name ? `${product.name} ${product.code}` : `${product.line} ${product.code}`;
+  const name = `${title} (${product.category})${color}`;
+  if (onSale(product)) {
+    return `Olá, Luk for Me. Quero a armação ${name} na Black November, com 20%: de ${brl(product.price)} por ${brl(salePrice(product.price))}. Vou enviar a foto da receita e uma foto de frente.`;
+  }
+  const status = product.note ? ` (${product.note})` : "";
+  return `Olá, Luk for Me. Quero a armação ${name}, ${brl(product.price)}${status}. Vou enviar a foto da receita e uma foto de frente.`;
 }
 
 function findProduct(code) {
@@ -136,23 +176,27 @@ function openProduct(product) {
   const count = variantsOf(product).length || product.colors;
   if (count) bits.push(`${count} ${count === 1 ? "cor" : "cores"}`);
   meta.textContent = bits.join(" · ");
-  price.textContent = brl(product.price);
+  fillPrice(price, product);
   note.textContent = product.note
     ? "Este modelo está em falta no momento. Peça para avisar quando voltar."
-    : "Valor da armação. No WhatsApp, envie a foto da receita e uma foto de frente. A lente é orçada em seguida.";
+    : onSale(product)
+      ? "Black November até 30/11: 20% nesta armação. No WhatsApp, envie a foto da receita e uma foto de frente. A lente é orçada em seguida."
+      : "Valor da armação. No WhatsApp, envie a foto da receita e uma foto de frente. A lente é orçada em seguida.";
   link.dataset.product = product.id;
   link.href = waHref(productText(product));
-  link.textContent = product.note ? "Avisar quando chegar" : "Pedir no WhatsApp";
+  link.textContent = product.note ? "Avisar quando chegar" : onSale(product) ? "Pedir com 20%" : "Pedir no WhatsApp";
   if (!dialog.open) dialog.showModal();
 }
 
 function displayName(product) {
+  if (product.name) return product.name;
   if (product.line === "TR") return "Comfort";
   if (product.group === "Solar") return "Solar";
   return product.line;
 }
 
 function cardDetail(product) {
+  if (product.name) return `${product.line} · ${product.code}`;
   const name = displayName(product);
   if (name === product.group && product.line && product.line !== name) {
     return `${product.line} · ${product.code}`;
@@ -178,11 +222,14 @@ function cardFor(product) {
     media.append(ph);
   }
   if (product.note) media.append(el("span", "badge", product.note));
+  else if (onSale(product)) media.append(el("span", "badge badge-sale", "20%"));
   const copy = el("div", "card-copy");
+  const price = el("p", "card-price");
+  fillPrice(price, product);
   copy.append(
     el("p", "card-name", displayName(product)),
     el("p", "card-code", cardDetail(product)),
-    el("p", "card-price", brl(product.price))
+    price
   );
   button.append(media, copy);
   button.addEventListener("click", () => openProduct(product));
@@ -220,7 +267,7 @@ function initCounts() {
   if (count) count.textContent = String(catalog.length);
   const from = document.getElementById("price-from");
   if (from && catalog.length) {
-    from.textContent = brl(Math.min(...catalog.map((item) => item.price)));
+    from.textContent = brl(Math.min(...catalog.map(payable)));
   }
 }
 
@@ -280,11 +327,11 @@ function initCatalog() {
       if (group !== "todos" && item.group !== group) return false;
       if (line && item.line !== line) return false;
       if (!q) return true;
-      return `${item.line} ${item.code} ${item.category} ${item.group} ${item.size || ""} ${item.note || ""}`.toLowerCase().includes(q);
+      return `${item.name || ""} ${item.line} ${item.code} ${item.category} ${item.group} ${item.size || ""} ${item.note || ""}`.toLowerCase().includes(q);
     });
     const mode = sortSelect.value;
-    if (mode === "menor") items.sort((a, b) => a.price - b.price || a.code.localeCompare(b.code));
-    if (mode === "maior") items.sort((a, b) => b.price - a.price || a.code.localeCompare(b.code));
+    if (mode === "menor") items.sort((a, b) => payable(a) - payable(b) || a.code.localeCompare(b.code));
+    if (mode === "maior") items.sort((a, b) => payable(b) - payable(a) || a.code.localeCompare(b.code));
     if (mode === "nome") items.sort((a, b) => a.line.localeCompare(b.line, "pt") || a.code.localeCompare(b.code));
     return items;
   }
@@ -375,6 +422,90 @@ function initDialog() {
   });
 }
 
+function rememberDismiss() {
+  try {
+    localStorage.setItem(DISMISS_KEY, todayKey());
+  } catch {
+    /* storage blocked */
+  }
+}
+
+function dismissedToday() {
+  try {
+    return localStorage.getItem(DISMISS_KEY) === todayKey();
+  } catch {
+    return false;
+  }
+}
+
+function initWaTexts() {
+  document.querySelectorAll("[data-wa-text]").forEach((link) => {
+    link.href = waHref(link.getAttribute("data-wa-text"));
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+  });
+}
+
+function initCampaign() {
+  initWaTexts();
+  if (!campaignOn()) return;
+  document.body.classList.add("is-campaign");
+  document.querySelectorAll("[data-campaign]").forEach((node) => {
+    node.hidden = false;
+  });
+  document.querySelectorAll(".legal").forEach((row) => {
+    const notes = row.querySelectorAll(":scope > span");
+    const note = notes[notes.length - 1];
+    if (note) note.textContent = "Black November: 20% nas armações até 30/11. Lentes sob receita.";
+  });
+  document.querySelectorAll(".topbar").forEach((bar) => {
+    bar.classList.add("topbar-campaign");
+    const link = document.createElement("a");
+    link.href = waHref(CAMPAIGN_TEXT);
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = "Black November · 20% nas armações da loja · até 30/11";
+    bar.replaceChildren(link);
+  });
+  if (dismissedToday()) return;
+
+  const dialog = el("dialog", "campaign-dialog");
+  dialog.setAttribute("aria-label", "Black November. 20% nas armações.");
+  const close = el("button", "close-btn");
+  close.type = "button";
+  close.setAttribute("aria-label", "Fechar");
+  const link = document.createElement("a");
+  link.className = "campaign-card";
+  link.href = waHref(CAMPAIGN_TEXT);
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  const img = el("img");
+  img.src = "assets/campanha/black-november.jpg";
+  img.alt = "Black November. 20% nas armações. Qualquer modelo da loja até 30 de novembro.";
+  link.append(img, el("span", "btn btn-dark", "Quero essa promoção"));
+  dialog.append(close, link);
+  document.body.append(dialog);
+
+  const dismiss = () => {
+    rememberDismiss();
+    if (dialog.open) dialog.close();
+  };
+  close.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    dismiss();
+  });
+  link.addEventListener("click", () => {
+    rememberDismiss();
+    if (dialog.open) dialog.close();
+  });
+  dialog.addEventListener("click", (event) => {
+    if (event.target === dialog) dismiss();
+  });
+  dialog.addEventListener("cancel", () => rememberDismiss());
+  dialog.showModal();
+}
+
 document.getElementById("ano") && (document.getElementById("ano").textContent = String(new Date().getFullYear()));
 initNav();
 initCounts();
@@ -382,3 +513,4 @@ initFeatured();
 initCatalog();
 initForms();
 initDialog();
+initCampaign();
