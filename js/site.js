@@ -1,9 +1,8 @@
 const WA = "5531996930611";
-const GROUPS = ["Acetato", "Metal", "Flex 360°", "TR Comfort", "Solar", "Clip-on"];
-const FEATURED = ["CA7804", "SHA089", "SSM047", "CL3101", "My24001", "8779", "CL2601", "2701", "220603"];
+const GROUPS = ["Ateliê", "Studio", "Heritage", "Flex 360°", "Clip-on"];
+const FEATURED = ["CA7804", "CA3011", "CL3101", "CL5101", "CL7107", "SHA089", "SSM047", "G5752"];
 const CAMPAIGN_TEXT = "Olá, Luk for Me. Vi a Black November no site e quero a promoção de 20% nas armações.";
 const CAMPAIGN_END = Date.parse("2026-12-01T00:00:00-03:00");
-const DISMISS_KEY = "luk-black-november";
 
 const catalog = Array.isArray(window.LUK_CATALOG) ? window.LUK_CATALOG : [];
 
@@ -25,10 +24,6 @@ function onSale(product) {
 
 function payable(product) {
   return onSale(product) ? salePrice(product.price) : product.price;
-}
-
-function todayKey() {
-  return new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo" }).format(new Date());
 }
 
 function fillPrice(node, product) {
@@ -210,11 +205,10 @@ function displayName(product) {
 
 function cardDetail(product) {
   if (product.name) return `${product.line} · ${product.code}`;
-  const name = displayName(product);
-  if (name === product.group && product.line && product.line !== name) {
-    return `${product.line} · ${product.code}`;
+  if (product.category && product.line && product.category !== product.line) {
+    return `${product.category} · ${product.code}`;
   }
-  return `${product.group} · ${product.code}`;
+  return `${product.line || product.group} · ${product.code}`;
 }
 
 function cardFor(product) {
@@ -477,22 +471,6 @@ function initDialog() {
   });
 }
 
-function rememberDismiss() {
-  try {
-    localStorage.setItem(DISMISS_KEY, todayKey());
-  } catch {
-    /* storage blocked */
-  }
-}
-
-function dismissedToday() {
-  try {
-    return localStorage.getItem(DISMISS_KEY) === todayKey();
-  } catch {
-    return false;
-  }
-}
-
 function initWaTexts() {
   document.querySelectorAll("[data-wa-text]").forEach((link) => {
     link.href = waHref(link.getAttribute("data-wa-text"));
@@ -522,43 +500,79 @@ function initCampaign() {
     link.textContent = "Black November · 20% nas armações da loja · até 30/11";
     bar.replaceChildren(link);
   });
-  if (dismissedToday()) return;
+}
 
-  const dialog = el("dialog", "campaign-dialog");
-  dialog.setAttribute("aria-label", "Black November. 20% nas armações.");
-  const close = el("button", "close-btn");
-  close.type = "button";
-  close.setAttribute("aria-label", "Fechar");
-  const link = document.createElement("a");
-  link.className = "campaign-card";
-  link.href = waHref(CAMPAIGN_TEXT);
-  link.target = "_blank";
-  link.rel = "noopener noreferrer";
-  const img = el("img");
-  img.src = "assets/campanha/black-november.jpg?v=2";
-  img.alt = "Black Friday. 20% nas armações. Qualquer modelo da loja até 30 de novembro.";
-  link.append(img, el("span", "btn btn-dark", "Quero essa promoção"));
-  dialog.append(close, link);
-  document.body.append(dialog);
+function initRotator() {
+  const root = document.querySelector("[data-rotator]");
+  if (!root) return;
+  if (!campaignOn()) {
+    root.querySelectorAll("[data-rotator-campaign]").forEach((node) => node.remove());
+  }
+  const slides = [...root.querySelectorAll(".rotator-slide")];
+  const dots = root.querySelector(".rotator-dots");
+  if (!slides.length) return;
+  let index = Math.max(0, slides.findIndex((slide) => slide.classList.contains("is-active")));
+  let timer = 0;
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const buttons = slides.map((slide, i) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.setAttribute("aria-label", slide.getAttribute("data-label") || `Campanha ${i + 1}`);
+    button.addEventListener("click", () => {
+      show(i);
+      start();
+    });
+    dots.append(button);
+    return button;
+  });
+  if (slides.length < 2) dots.hidden = true;
 
-  const dismiss = () => {
-    rememberDismiss();
-    if (dialog.open) dialog.close();
-  };
-  close.addEventListener("click", (event) => {
+  function show(next) {
+    index = (next + slides.length) % slides.length;
+    slides.forEach((slide, i) => {
+      const on = i === index;
+      slide.classList.toggle("is-active", on);
+      slide.setAttribute("aria-hidden", on ? "false" : "true");
+      if (on) slide.removeAttribute("inert");
+      else slide.setAttribute("inert", "");
+    });
+    buttons.forEach((button, i) => {
+      if (i === index) button.setAttribute("aria-current", "true");
+      else button.removeAttribute("aria-current");
+    });
+  }
+
+  function stop() {
+    if (timer) window.clearInterval(timer);
+    timer = 0;
+  }
+
+  function start() {
+    stop();
+    if (reduce || slides.length < 2) return;
+    timer = window.setInterval(() => show(index + 1), 3000);
+  }
+
+  root.addEventListener("mouseenter", stop);
+  root.addEventListener("mouseleave", start);
+  root.addEventListener("focusin", stop);
+  root.addEventListener("focusout", (event) => {
+    if (!root.contains(event.relatedTarget)) start();
+  });
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) stop();
+    else start();
+  });
+  root.addEventListener("keydown", (event) => {
+    if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+    if (event.target.closest("a, input, textarea")) return;
     event.preventDefault();
-    event.stopPropagation();
-    dismiss();
+    show(index + (event.key === "ArrowRight" ? 1 : -1));
+    start();
   });
-  link.addEventListener("click", () => {
-    rememberDismiss();
-    if (dialog.open) dialog.close();
-  });
-  dialog.addEventListener("click", (event) => {
-    if (event.target === dialog) dismiss();
-  });
-  dialog.addEventListener("cancel", () => rememberDismiss());
-  dialog.showModal();
+
+  show(index);
+  start();
 }
 
 function brlFromCents(cents) {
@@ -657,4 +671,5 @@ initCatalog();
 initForms();
 initDialog();
 initCampaign();
+initRotator();
 initOrder();

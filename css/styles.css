@@ -220,6 +220,214 @@ h1 em, h2 em {
   box-shadow: 0 0 0 1px rgba(28, 23, 18, 0.08), 0 22px 50px rgba(28, 23, 18, 0.1);
 }
 
+.hero-rotator {
+  width: min(1320px, calc(100% - 6vw));
+  margin: 0 auto;
+  padding: 2.4rem 0 0.4rem;
+}
+.rotator-stage {
+  display: grid;
+  height: clamp(520px, 68vh, 680px);
+  overflow: hidden;
+}
+.rotator-slide {
+  grid-area: 1 / 1;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.55s var(--ease);
+}
+.rotator-slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  z-index: 1;
+}
+.hero-rotator .hero-grid { height: 100%; min-height: 0; }
+.hero-rotator .hero-stage { height: 100%; min-height: 0; overflow: hidden; }
+.hero-rotator .hero-stage img {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  object-fit: cover;
+  object-position: center 22%;
+}
+.poster-banner,
+.varilux-banner,
+.pair-banner {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  border-radius: calc(var(--radius) + 6px);
+  overflow: hidden;
+}
+.poster-banner {
+  align-items: center;
+  justify-content: center;
+  background: #1a120e;
+}
+.poster-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
+}
+.varilux-banner {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  padding: 2rem 1.5rem 1.6rem;
+  text-align: center;
+  color: #fff;
+  background:
+    radial-gradient(120% 80% at 50% -10%, #8eb6ff 0%, transparent 55%),
+    linear-gradient(180deg, #5f97f2 0%, #3d78e6 42%, #1d4ed8 72%, #071a78 100%);
+}
+.varilux-brand {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(3.4rem, 7vw, 6.2rem);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+}
+.varilux-sub {
+  margin: 0;
+  font-weight: 400;
+  font-size: clamp(1rem, 2vw, 1.35rem);
+}
+.varilux-offer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  margin: 0.4rem 0;
+}
+.varilux-pairs,
+.varilux-price { margin: 0; }
+.varilux-pairs {
+  padding: 0.85rem 1.3rem;
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  border-radius: 46% 54% 48% 52%;
+  font-size: 1.15rem;
+  line-height: 1.15;
+}
+.varilux-pairs strong { display: block; font-size: 1.55rem; }
+.varilux-price {
+  padding: 0.7rem 1.3rem 0.85rem;
+  border-radius: 28px;
+  background: #f7f4ef;
+  color: #1c1712;
+  line-height: 0.9;
+}
+.varilux-price small {
+  display: block;
+  margin-bottom: 0.15rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+.varilux-price strong {
+  font-family: var(--display);
+  font-size: clamp(2.6rem, 5vw, 4.2rem);
+  letter-spacing: -0.04em;
+}
+.varilux-price sup { font-size: 0.9rem; font-weight: 700; }
+.varilux-also { margin: 0.2rem 0 0; font-size: 1.05rem; }
+.varilux-season {
+  margin: 0.2rem 0 0;
+  font-family: var(--display);
+  font-size: clamp(1.6rem, 3vw, 2.3rem);
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+.varilux-season small {
+  display: block;
+  margin-bottom: 0.15rem;
+  font-family: var(--sans);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.pair-banner {
+  background:
+    linear-gradient(90deg, #f7f4ef 0 58%, #1c1712 58% 100%);
+  color: var(--text);
+}
+.pair-copy {
+  flex: 1.15;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 2.2rem 6% 2.2rem 7%;
+}
+.pair-title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(2.2rem, 4.4vw, 3.8rem);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+}
+.pair-copy p:not(.kicker):not(.pair-title) {
+  max-width: 28rem;
+  margin: 0.9rem 0 0;
+  color: var(--text-dim);
+  font-weight: 300;
+}
+.pair-copy .btn { margin-top: 1.4rem; }
+.pair-mark {
+  flex: 0.85;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #f7f4ef;
+  text-align: center;
+}
+.pair-mark strong {
+  font-family: var(--display);
+  font-size: clamp(4.5rem, 9vw, 8rem);
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  line-height: 0.85;
+  color: #e7c27a;
+}
+.pair-mark span {
+  margin-top: 0.4rem;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+}
+.rotator-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.45rem;
+  margin: 0.95rem 0 0.2rem;
+}
+.rotator-dots button {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 99px;
+  background: rgba(28, 23, 18, 0.28);
+  cursor: pointer;
+}
+.rotator-dots button[aria-current="true"] {
+  width: 22px;
+  background: #1c1712;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rotator-slide { transition: none; }
+}
+
 .look-section { padding: 1rem 0 4.5rem; }
 .lookbook {
   display: grid;
@@ -273,7 +481,7 @@ h1 em, h2 em {
 
 .materials {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
 }
 .material-card {
@@ -1175,11 +1383,29 @@ dialog.campaign-dialog {
   font-weight: 600;
 }
 
+@media (max-width: 980px) {
+  .rotator-stage { height: auto; overflow: visible; }
+  .rotator-slide { display: none; height: auto; overflow: visible; opacity: 1; visibility: visible; }
+  .rotator-slide.is-active { display: block; }
+  .hero-rotator .hero-grid,
+  .hero-rotator .hero-stage { height: auto; }
+  .hero-rotator .hero-stage img { height: auto; }
+  .poster-banner,
+  .varilux-banner,
+  .pair-banner { height: auto; min-height: 0; }
+  .poster-banner { padding: 0; }
+  .poster-banner img { height: min(72vh, 560px); width: 100%; object-fit: cover; object-position: center bottom; }
+  .pair-banner { flex-direction: column; background: #f7f4ef; }
+  .pair-copy { padding: 1.6rem 1.3rem 1.2rem; }
+  .pair-mark { width: 100%; min-height: 160px; background: #1c1712; padding: 1.2rem; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .btn:hover, .material-card:hover, .product-card:hover, .store-tease a:hover img { transform: none; }
   .product-card:hover .card-media img { transform: none; }
   .nav-toggle .burger,
   .nav-toggle .burger::before,
-  .nav-toggle .burger::after { transition: none; }
+  .nav-toggle .burger::after,
+  .rotator-slide { transition: none; }
 }
