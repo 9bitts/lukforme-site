@@ -1,5 +1,6 @@
 Peças da Black November. Publicar no Instagram da ótica.
-O site usa a mesma imagem de quarta: assets/campanha/black-november.jpg
+O site usa o banner do Zaha: assets/campanha/black-friday-zaha.jpg
+A peça de quarta do Instagram continua em assets/campanha/black-november.jpg
 
 Quarta 25 — feed
 Arquivo: assets/campanha/black-november.jpg

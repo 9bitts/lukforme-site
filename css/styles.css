@@ -280,8 +280,9 @@ h1 em, h2 em {
 .poster-banner img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center bottom;
+  object-fit: contain;
+  object-position: center center;
+  background: #120e0b;
 }
 .varilux-banner {
   flex-direction: column;
@@ -1430,7 +1431,7 @@ dialog.campaign-dialog {
   .varilux-banner,
   .pair-banner { height: auto; min-height: 0; }
   .poster-banner { padding: 0; }
-  .poster-banner img { height: min(72vh, 560px); width: 100%; object-fit: cover; object-position: center bottom; }
+  .poster-banner img { height: auto; width: 100%; object-fit: contain; object-position: center center; }
   .pair-banner { flex-direction: column; background: #f7f4ef; }
   .pair-copy { padding: 1.6rem 1.3rem 1.2rem; }
   .pair-mark { width: 100%; min-height: 160px; background: #1c1712; padding: 1.2rem; }
