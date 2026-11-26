@@ -284,9 +284,19 @@ function initFeatured() {
   FEATURED.map(findProduct).filter(Boolean).forEach((product) => grid.append(cardFor(product)));
 }
 
+function sectionOf(product) {
+  const category = product.category || "";
+  if (category === "Solar") return "sol";
+  if (/clip/i.test(category) || product.group === "Clip-on") return "acessorios";
+  return "grau";
+}
+
 function initCatalog() {
   const grid = document.getElementById("catalog-grid");
   if (!grid) return;
+  const section = grid.dataset.section || "";
+  const pool = section ? catalog.filter((item) => sectionOf(item) === section) : catalog;
+  const groups = GROUPS.filter((name) => pool.some((item) => item.group === name));
   const chips = document.getElementById("chips");
   const lineSelect = document.getElementById("linha");
   const sortSelect = document.getElementById("ordem");
@@ -295,20 +305,20 @@ function initCatalog() {
   const empty = document.getElementById("vazio");
   const params = new URLSearchParams(location.search);
   let group = params.get("grupo") || "todos";
-  if (group !== "todos" && !GROUPS.includes(group)) group = "todos";
+  if (group !== "todos" && !groups.includes(group)) group = "todos";
   let line = params.get("linha") || "";
   let query = params.get("q") || "";
   if (search) search.value = query;
 
   function linesFor(currentGroup) {
-    const pool = currentGroup === "todos" ? catalog : catalog.filter((item) => item.group === currentGroup);
-    return [...new Set(pool.map((item) => item.line))].sort((a, b) => a.localeCompare(b, "pt"));
+    const source = currentGroup === "todos" ? pool : pool.filter((item) => item.group === currentGroup);
+    return [...new Set(source.map((item) => item.line))].sort((a, b) => a.localeCompare(b, "pt"));
   }
 
   function paintChips() {
     chips.replaceChildren();
-    ["todos", ...GROUPS].forEach((name) => {
-      const button = el("button", "chip", name === "todos" ? "Toda a coleção" : name);
+    ["todos", ...groups].forEach((name) => {
+      const button = el("button", "chip", name === "todos" ? "Todos" : name);
       button.type = "button";
       button.setAttribute("aria-pressed", String(group === name));
       button.addEventListener("click", () => {
@@ -330,7 +340,7 @@ function initCatalog() {
 
   function filtered() {
     const q = query.trim().toLowerCase();
-    let items = catalog.filter((item) => {
+    let items = pool.filter((item) => {
       if (group !== "todos" && item.group !== group) return false;
       if (line && item.line !== line) return false;
       if (!q) return true;
@@ -375,7 +385,7 @@ function initCatalog() {
   window.addEventListener("popstate", () => {
     const nextParams = new URLSearchParams(location.search);
     group = nextParams.get("grupo") || "todos";
-    if (group !== "todos" && !GROUPS.includes(group)) group = "todos";
+    if (group !== "todos" && !groups.includes(group)) group = "todos";
     line = nextParams.get("linha") || "";
     query = nextParams.get("q") || "";
     if (search) search.value = query;
@@ -606,10 +616,10 @@ function initOrder() {
 
   if (!orderNsu || !transactionNsu || !slug) {
     title.textContent = "Pedido";
-    copy.textContent = "Esta página confirma o pagamento de uma armação feito pelo site. Escolha o modelo na coleção para pagar.";
+    copy.textContent = "Esta página confirma o pagamento de uma armação feito pelo site. Escolha o modelo para pagar.";
     actions.hidden = false;
-    wa.href = "/colecao";
-    wa.textContent = "Ver a coleção";
+    wa.href = "/oculos-de-sol";
+    wa.textContent = "Ver óculos de sol";
     return;
   }
 

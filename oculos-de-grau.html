@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Óculos de grau · Luk for Me</title>
+  <meta name="description" content="Óculos de grau Luk for Me: Apolo e Flex 360°. A armação tem preço no site. A lente fecha com a receita.">
+  <meta name="theme-color" content="#f6f3ee">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css?v=15">
+</head>
+<body>
+  <a class="skip" href="#conteudo">Ir para o conteúdo</a>
+  <p class="topbar">Armação com preço · Lente sob receita · Frete grátis acima de R$ 800</p>
+  <header class="site-header">
+    <a class="logo" href="/" aria-label="Luk for Me, início">
+      <img src="assets/logo.png?v=2" alt="">
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="sr-only">Abrir menu</span>
+      <span class="burger"></span>
+    </button>
+    <nav id="site-nav" class="site-nav" aria-label="Seções">
+      <a href="/oculos-de-sol">Óculos de sol</a>
+      <a href="/oculos-de-grau" aria-current="page">Óculos de grau</a>
+      <a href="/lentes-de-contato">Lentes de contato</a>
+      <a href="/acessorios">Acessórios</a>
+      <a href="/loja">Loja</a>
+      <a href="/garantia">Garantia</a>
+      <a class="nav-wa" href="https://wa.me/5531996930611?text=Ol%C3%A1%2C%20Luk%20for%20Me.%20Quero%20ajuda%20para%20escolher%20um%20%C3%B3culos%20de%20grau.">WhatsApp</a>
+    </nav>
+    <a class="header-wa" href="https://wa.me/5531996930611?text=Ol%C3%A1%2C%20Luk%20for%20Me.%20Quero%20ajuda%20para%20escolher%20um%20%C3%B3culos%20de%20grau.">WhatsApp</a>
+  </header>
+
+  <main id="conteudo">
+    <section class="page-intro">
+      <div class="wrap">
+        <p class="kicker">Óculos de grau</p>
+        <div class="section-head">
+          <h1>Apolo e a linha Flex 360°.</h1>
+          <p>O pagamento no site é só da armação. A lente fecha no WhatsApp, com a foto da receita e uma foto de frente.</p>
+          <p data-campaign hidden>Black November: 20% em qualquer armação à venda, até 30/11. O valor riscado é o preço cheio.</p>
+        </div>
+        <div class="toolbar">
+          <div class="chips" id="chips"></div>
+          <div class="toolbar-row">
+            <label class="field">Buscar
+              <input id="busca" type="search" placeholder="Linha, código ou material">
+            </label>
+            <label class="field">Linha
+              <select id="linha"><option value="">Todas as linhas</option></select>
+            </label>
+            <label class="field">Ordenar
+              <select id="ordem">
+                <option value="colecao">Padrão</option>
+                <option value="menor">Menor preço</option>
+                <option value="maior">Maior preço</option>
+                <option value="nome">Linha</option>
+              </select>
+            </label>
+          </div>
+          <p id="resultado" aria-live="polite"></p>
+        </div>
+        <div class="product-grid" id="catalog-grid" data-section="grau"></div>
+        <p class="empty" id="vazio" hidden>Nenhum modelo com esse filtro. Limpe a busca ou escolha outra linha.</p>
+      </div>
+    </section>
+
+    <section class="section tight" id="promos" data-campaign hidden>
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <p class="kicker">Novembro</p>
+            <h2>Algumas lentes em promoção.</h2>
+          </div>
+          <p>Condições do laboratório. O preço final depende da receita, e a ótica confirma a linha antes de fechar.</p>
+        </div>
+        <div class="offer-grid">
+          <article class="offer">
+            <h3>50% no primeiro par Varilux</h3>
+            <p>Varilux Digital com Crizal e/ou Transitions. Adição até 1,75. Um par por CPF.</p>
+            <a class="btn btn-dark" data-wa-text="Olá, Luk for Me. Vi a promo de novembro e quero o primeiro par Varilux com 50%. Vou enviar a receita.">Pedir no WhatsApp</a>
+          </article>
+          <article class="offer">
+            <h3>Segundo par Essilor com 50%</h3>
+            <p>Na compra de um par com desconto das lentes participantes Varilux, Kodak ou Crizal pronta, o segundo sai com 50% sobre esse valor. Mesmo desenho, valor igual ou menor, mesma dioptria. O primeiro par leva Crizal, Transitions, Xperio ou Optifog.</p>
+            <a class="btn btn-dark" data-wa-text="Olá, Luk for Me. Vi a promo de novembro e quero o segundo par Essilor com 50%. Vou enviar a receita.">Pedir no WhatsApp</a>
+          </article>
+          <article class="offer">
+            <h3>Ganhe o segundo par</h3>
+            <p>Varilux XR Series, Eyezen ou Stellest, nas combinações da campanha. Stellest não mistura dois pares de sol nem gerações diferentes. XR Pro, XR Track e Eyecode dependem do equipamento da loja.</p>
+            <a class="btn btn-dark" data-wa-text="Olá, Luk for Me. Vi a promo de novembro e quero ganhar o segundo par de lentes Varilux, Eyezen ou Stellest. Vou enviar a receita.">Pedir no WhatsApp</a>
+          </article>
+          <article class="offer">
+            <h3>ZEISS, o segundo par</h3>
+            <p>Mesmo dia, mesmo desenho, material e tratamento iguais ou inferiores. Na ClearView acabada, o segundo par repete antirreflexo, material e grau. Lente pronta 1.74 e PhotoFusion ficam de fora.</p>
+            <a class="btn btn-dark" data-wa-text="Olá, Luk for Me. Vi a promo de novembro e quero o segundo par de lentes ZEISS. Vou enviar a receita.">Pedir no WhatsApp</a>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div>
+        <img class="footer-logo" src="assets/logo.png?v=2" alt="Luk for Me ótica">
+        <p>Atendimento online para todo o Brasil.</p>
+      </div>
+      <div>
+        <h3>Seções</h3>
+        <ul>
+          <li><a href="/oculos-de-sol">Óculos de sol</a></li>
+          <li><a href="/oculos-de-grau">Óculos de grau</a></li>
+          <li><a href="/lentes-de-contato">Lentes de contato</a></li>
+          <li><a href="/acessorios">Acessórios</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>A ótica</h3>
+        <ul>
+          <li><a href="/loja">A loja</a></li>
+          <li><a href="/#sobre">Nossa história</a></li>
+          <li><a href="/garantia">Garantia</a></li>
+          <li><a href="/garantia#cuidados">Cuidados</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Atendimento</h3>
+        <ul>
+          <li><a href="https://wa.me/5531996930611">(31) 99693-0611</a></li>
+          <li>Seg–sex 9h–18h</li>
+          <li>Sábados — atendimento a domicílio (solicitar agendamento)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="wrap legal">
+      <span>© <span id="ano">2026</span> Luk for Me</span>
+      <span>Preços das armações. Lentes sob receita.</span>
+    </div>
+  </footer>
+
+  <dialog id="product-dialog" class="product-dialog" aria-labelledby="dialog-title">
+    <button class="close-btn" type="button" data-close aria-label="Fechar"></button>
+    <div class="dialog-grid">
+      <figure data-figure aria-label="Ampliar a foto da armação"></figure>
+      <div class="dialog-copy">
+        <p class="kicker">Armação</p>
+        <h2 id="dialog-title" data-title></h2>
+        <p data-meta></p>
+        <p class="price" data-price></p>
+        <p data-note></p>
+        <div class="dialog-actions">
+          <button class="btn btn-dark" type="button" data-pay>Pagar a armação</button>
+          <a class="btn btn-line" data-wa href="https://wa.me/5531996930611">Pedir no WhatsApp</a>
+        </div>
+        <p class="pay-status" data-pay-status hidden></p>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="js/catalog-data.js?v=8" defer></script>
+  <script src="js/site.js?v=12" defer></script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Óculos de sol · Luk for Me</title>
+  <meta name="description" content="Óculos de sol Luk for Me: Ateliê, Studio e Heritage, com preço da armação.">
+  <meta name="theme-color" content="#f6f3ee">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css?v=15">
+</head>
+<body>
+  <a class="skip" href="#conteudo">Ir para o conteúdo</a>
+  <p class="topbar">Armação com preço · Lente sob receita · Frete grátis acima de R$ 800</p>
+  <header class="site-header">
+    <a class="logo" href="/" aria-label="Luk for Me, início">
+      <img src="assets/logo.png?v=2" alt="">
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="sr-only">Abrir menu</span>
+      <span class="burger"></span>
+    </button>
+    <nav id="site-nav" class="site-nav" aria-label="Seções">
+      <a href="/oculos-de-sol" aria-current="page">Óculos de sol</a>
+      <a href="/oculos-de-grau">Óculos de grau</a>
+      <a href="/lentes-de-contato">Lentes de contato</a>
+      <a href="/acessorios">Acessórios</a>
+      <a href="/loja">Loja</a>
+      <a href="/garantia">Garantia</a>
+      <a class="nav-wa" href="https://wa.me/5531996930611?text=Ol%C3%A1%2C%20Luk%20for%20Me.%20Quero%20ajuda%20para%20escolher%20um%20%C3%B3culos%20de%20sol.">WhatsApp</a>
+    </nav>
+    <a class="header-wa" href="https://wa.me/5531996930611?text=Ol%C3%A1%2C%20Luk%20for%20Me.%20Quero%20ajuda%20para%20escolher%20um%20%C3%B3culos%20de%20sol.">WhatsApp</a>
+  </header>
+
+  <main id="conteudo">
+    <section class="page-intro">
+      <div class="wrap">
+        <p class="kicker">Óculos de sol</p>
+        <div class="section-head">
+          <h1>Ateliê, Studio e Heritage.</h1>
+          <p>Preço da armação. Toque no modelo, escolha a cor e pague no site.</p>
+          <p data-campaign hidden>Black November: 20% em qualquer armação à venda, até 30/11. O valor riscado é o preço cheio.</p>
+        </div>
+        <div class="toolbar">
+          <div class="chips" id="chips"></div>
+          <div class="toolbar-row">
+            <label class="field">Buscar
+              <input id="busca" type="search" placeholder="Linha, código ou material">
+            </label>
+            <label class="field">Linha
+              <select id="linha"><option value="">Todas as linhas</option></select>
+            </label>
+            <label class="field">Ordenar
+              <select id="ordem">
+                <option value="colecao">Padrão</option>
+                <option value="menor">Menor preço</option>
+                <option value="maior">Maior preço</option>
+                <option value="nome">Linha</option>
+              </select>
+            </label>
+          </div>
+          <p id="resultado" aria-live="polite"></p>
+        </div>
+        <div class="product-grid" id="catalog-grid" data-section="sol"></div>
+        <p class="empty" id="vazio" hidden>Nenhum modelo com esse filtro. Limpe a busca ou escolha outra linha.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div>
+        <img class="footer-logo" src="assets/logo.png?v=2" alt="Luk for Me ótica">
+        <p>Atendimento online para todo o Brasil.</p>
+      </div>
+      <div>
+        <h3>Seções</h3>
+        <ul>
+          <li><a href="/oculos-de-sol">Óculos de sol</a></li>
+          <li><a href="/oculos-de-grau">Óculos de grau</a></li>
+          <li><a href="/lentes-de-contato">Lentes de contato</a></li>
+          <li><a href="/acessorios">Acessórios</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>A ótica</h3>
+        <ul>
+          <li><a href="/loja">A loja</a></li>
+          <li><a href="/#sobre">Nossa história</a></li>
+          <li><a href="/garantia">Garantia</a></li>
+          <li><a href="/garantia#cuidados">Cuidados</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Atendimento</h3>
+        <ul>
+          <li><a href="https://wa.me/5531996930611">(31) 99693-0611</a></li>
+          <li>Seg–sex 9h–18h</li>
+          <li>Sábados — atendimento a domicílio (solicitar agendamento)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="wrap legal">
+      <span>© <span id="ano">2026</span> Luk for Me</span>
+      <span>Preços das armações. Lentes sob receita.</span>
+    </div>
+  </footer>
+
+  <dialog id="product-dialog" class="product-dialog" aria-labelledby="dialog-title">
+    <button class="close-btn" type="button" data-close aria-label="Fechar"></button>
+    <div class="dialog-grid">
+      <figure data-figure aria-label="Ampliar a foto da armação"></figure>
+      <div class="dialog-copy">
+        <p class="kicker">Armação</p>
+        <h2 id="dialog-title" data-title></h2>
+        <p data-meta></p>
+        <p class="price" data-price></p>
+        <p data-note></p>
+        <div class="dialog-actions">
+          <button class="btn btn-dark" type="button" data-pay>Pagar a armação</button>
+          <a class="btn btn-line" data-wa href="https://wa.me/5531996930611">Pedir no WhatsApp</a>
+        </div>
+        <p class="pay-status" data-pay-status hidden></p>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="js/catalog-data.js?v=8" defer></script>
+  <script src="js/site.js?v=12" defer></script>
+</body>
+</html>
