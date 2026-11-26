@@ -445,7 +445,7 @@ h1 em, h2 em {
 }
 .lookbook figure {
   margin: 0;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 3 / 5;
   overflow: hidden;
   border-radius: calc(var(--radius) + 4px);
   box-shadow: 0 0 0 1px rgba(28, 23, 18, 0.08);
@@ -454,7 +454,7 @@ h1 em, h2 em {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 18%;
+  object-position: center center;
 }
 
 .section { padding: 5.5rem 0; }
@@ -1263,7 +1263,7 @@ dialog::backdrop { background: rgba(28, 23, 18, 0.4); }
   .contact-row a { grid-column: 2; grid-row: 1 / span 2; }
   .nav-wa { display: flex; }
   .logo img { height: 50px; }
-  .lookbook figure { aspect-ratio: 4 / 5; }
+  .lookbook figure { aspect-ratio: 3 / 5; }
   .store-tease { grid-template-columns: 1fr 1fr; }
   .lens-row, .numbers, .toolbar-row { grid-template-columns: 1fr 1fr; }
   .nav-toggle { display: inline-block; }
@@ -1298,7 +1298,7 @@ dialog::backdrop { background: rgba(28, 23, 18, 0.4); }
   .section { padding: 3.6rem 0; }
   h1 { font-size: 2.5rem; }
   .hero { padding-top: 2.2rem; }
-  .lookbook figure { aspect-ratio: 1 / 1; }
+  .lookbook figure { aspect-ratio: 3 / 5; }
   .viewer-stage { height: 52vh; }
   .viewer-stage figcaption { padding-left: 0.9rem; padding-right: 0.9rem; flex-direction: column; }
   .shot { flex-basis: 72px; width: 72px; height: 72px; }
