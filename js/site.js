@@ -45,7 +45,8 @@ function waHref(text) {
 function productText(product) {
   const variant = selectedVariant(product);
   const color = variant ? `, cor ${variant.name}` : "";
-  const title = product.name ? `${product.name} ${product.code}` : `${product.line} ${product.code}`;
+  const label = product.title || displayName(product);
+  const title = `${label} ${product.code}`;
   const name = `${title} (${product.category})${color}`;
   if (onSale(product)) {
     return `Olá, Luk for Me. Quero a armação ${name} na Black November, com 20%: de ${brl(product.price)} por ${brl(salePrice(product.price))}.`;
@@ -165,14 +166,31 @@ function openProduct(product) {
   dialog.querySelectorAll(".dialog-copy .swatches").forEach((row) => row.remove());
   const colors = swatchRow(product);
   if (colors) meta.before(colors);
-  title.textContent = `${displayName(product)} ${product.code}`;
-  const bits = [product.group];
-  if (product.size) bits.push(`Tamanho ${product.size}`);
+  title.textContent = product.title || `${displayName(product)} ${product.code}`;
+  let subtitle = dialog.querySelector("[data-subtitle]");
+  if (!subtitle) {
+    subtitle = el("p", "dialog-subtitle");
+    subtitle.dataset.subtitle = "";
+    title.after(subtitle);
+  }
+  subtitle.textContent = product.subtitle || "";
+  subtitle.hidden = !product.subtitle;
+  const bits = [];
+  if (product.title) bits.push(product.code);
+  bits.push(product.group);
+  if (product.horizontal) bits.push(`Horizontal ${product.horizontal}`);
+  if (product.bridge) bits.push(`Ponte ${product.bridge}`);
+  if (product.temple) bits.push(`Haste ${product.temple}`);
+  if (!product.horizontal && !product.bridge && !product.temple && product.size) bits.push(`Tamanho ${product.size}`);
   const count = variantsOf(product).length || product.colors;
   if (count) bits.push(`${count} ${count === 1 ? "cor" : "cores"}`);
   meta.textContent = bits.join(" · ");
   fillPrice(price, product);
-  note.textContent = product.note
+  note.textContent = product.note && product.description
+    ? `Este modelo está em falta no momento. ${product.description}`
+    : product.description
+    ? product.description
+    : product.note
     ? "Este modelo está em falta no momento. Peça para avisar quando voltar."
     : onSale(product)
       ? "Black November até 30/11: 20% nesta armação. O pagamento é só da armação. Depois, no WhatsApp, envie a foto da receita e uma foto de frente."
@@ -197,6 +215,7 @@ function openProduct(product) {
 }
 
 function displayName(product) {
+  if (product.title) return product.title;
   if (product.name) return product.name;
   if (product.line === "TR") return "Comfort";
   if (product.group === "Solar") return "Solar";
@@ -204,6 +223,7 @@ function displayName(product) {
 }
 
 function cardDetail(product) {
+  if (product.subtitle) return product.subtitle;
   if (product.name) return `${product.line} · ${product.code}`;
   if (product.category && product.line && product.category !== product.line) {
     return `${product.category} · ${product.code}`;
@@ -344,7 +364,7 @@ function initCatalog() {
       if (group !== "todos" && item.group !== group) return false;
       if (line && item.line !== line) return false;
       if (!q) return true;
-      return `${item.name || ""} ${item.line} ${item.code} ${item.category} ${item.group} ${item.size || ""} ${item.note || ""}`.toLowerCase().includes(q);
+      return `${item.title || ""} ${item.subtitle || ""} ${item.description || ""} ${item.name || ""} ${item.line} ${item.code} ${item.category} ${item.group} ${item.size || ""} ${item.note || ""}`.toLowerCase().includes(q);
     });
     const mode = sortSelect.value;
     if (mode === "menor") items.sort((a, b) => payable(a) - payable(b) || a.code.localeCompare(b.code));
@@ -396,7 +416,14 @@ function initCatalog() {
   const modelo = params.get("modelo");
   if (modelo) {
     const product = findProduct(modelo);
-    if (product) openProduct(product);
+    if (product) {
+      const cor = params.get("cor");
+      if (cor) {
+        const index = variantsOf(product).findIndex((variant) => variant.name.toLowerCase() === cor.toLowerCase());
+        if (index >= 0) product.selected = index;
+      }
+      openProduct(product);
+    }
   }
 }
 

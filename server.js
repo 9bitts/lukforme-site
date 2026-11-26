@@ -2,14 +2,15 @@ const crypto = require("node:crypto");
 const fs = require("node:fs");
 const http = require("node:http");
 const path = require("node:path");
-const vm = require("node:vm");
 
 const ROOT = __dirname;
+loadEnv(path.join(ROOT, ".env"));
+const store = require("./catalog-store");
 const HANDLE = "oticalukforme";
 const CAMPAIGN_END = Date.parse("2026-12-01T00:00:00-03:00");
-const DATA_DIR = path.join(ROOT, "data");
+const DATA_DIR = process.env.DATA_DIR || path.join(ROOT, "data");
 const ORDERS_FILE = path.join(DATA_DIR, "orders.jsonl");
-const ALLOWED_HOSTS = new Set(["lukfor.me", "www.lukfor.me", "localhost", "127.0.0.1"]);
+const ALLOWED_HOSTS = new Set(["lukforme.com", "www.lukforme.com", "lukfor.me", "www.lukfor.me", "localhost", "127.0.0.1"]);
 const SECURITY = {
   "X-Content-Type-Options": "nosniff",
   "Referrer-Policy": "strict-origin-when-cross-origin",
@@ -33,9 +34,7 @@ const MIME = {
   ".woff2": "font/woff2"
 };
 
-loadEnv(path.join(ROOT, ".env"));
-
-const catalog = loadCatalog();
+let catalog = store.publicList();
 const orders = new Map();
 loadOrders();
 
@@ -63,6 +62,32 @@ const server = http.createServer((req, res) => {
     handleWebhook(req, res).catch((error) => fail(res, error));
     return;
   }
+  if (pathname === "/api/admin/login" && req.method === "POST") {
+    handleAdminLogin(req, res).catch((error) => fail(res, error));
+    return;
+  }
+  if (pathname === "/api/admin/logout" && req.method === "POST") {
+    handleAdminLogout(req, res);
+    return;
+  }
+  if (pathname === "/api/admin/session" && req.method === "GET") {
+    sendJson(res, adminOk(req) ? 200 : 401, adminOk(req) ? { ok: true } : { error: "Entre para continuar." });
+    return;
+  }
+  if (pathname === "/api/admin/products" && req.method === "GET") {
+    if (!requireAdmin(req, res)) return;
+    sendJson(res, 200, { products: store.list() });
+    return;
+  }
+  const adminProduct = pathname.match(/^\/api\/admin\/products\/([^/]+)$/);
+  if (adminProduct && req.method === "PUT") {
+    handleAdminSave(req, res, decodeURIComponent(adminProduct[1])).catch((error) => fail(res, error));
+    return;
+  }
+  if (pathname === "/api/admin/upload" && req.method === "POST") {
+    handleAdminUpload(req, res).catch((error) => fail(res, error));
+    return;
+  }
   if (pathname.startsWith("/api/")) {
     sendJson(res, 405, { error: "Método não aceito." });
     return;
@@ -71,6 +96,33 @@ const server = http.createServer((req, res) => {
   if (req.method !== "GET" && req.method !== "HEAD") {
     res.writeHead(405, SECURITY);
     res.end();
+    return;
+  }
+
+  if (pathname === "/js/catalog-data.js") {
+    const body = Buffer.from(store.script());
+    res.writeHead(req.method === "HEAD" ? 200 : 200, {
+      ...SECURITY,
+      "Content-Type": "text/javascript; charset=utf-8",
+      "Cache-Control": "no-cache",
+      "Content-Length": body.length
+    });
+    res.end(req.method === "HEAD" ? undefined : body);
+    return;
+  }
+  if (pathname === "/feeds/google-shopping.xml") {
+    const body = Buffer.from(store.feedXml(publicOrigin(req)));
+    res.writeHead(200, {
+      ...SECURITY,
+      "Content-Type": "application/xml; charset=utf-8",
+      "Cache-Control": "public, max-age=300",
+      "Content-Length": body.length
+    });
+    res.end(req.method === "HEAD" ? undefined : body);
+    return;
+  }
+  if (pathname.startsWith("/uploads/")) {
+    serveUpload(req, res, pathname.slice("/uploads/".length));
     return;
   }
 
@@ -113,14 +165,6 @@ function loadEnv(file) {
   }
 }
 
-function loadCatalog() {
-  const sandbox = { window: {} };
-  vm.runInNewContext(fs.readFileSync(path.join(ROOT, "js", "catalog-data.js"), "utf8"), sandbox, {
-    filename: "catalog-data.js"
-  });
-  return Array.isArray(sandbox.window.LUK_CATALOG) ? sandbox.window.LUK_CATALOG : [];
-}
-
 function loadOrders() {
   let text = "";
   try {
@@ -159,6 +203,7 @@ function chargeCents(product) {
 }
 
 function displayName(product) {
+  if (product.title) return product.title;
   if (product.name) return product.name;
   if (product.line === "TR") return "Comfort";
   if (product.group === "Solar") return "Solar";
@@ -178,7 +223,7 @@ function publicOrigin(req) {
   const hostname = hostHeader.replace(/:\d+$/, "").toLowerCase();
   const forwarded = String(req.headers["x-forwarded-proto"] || "").split(",")[0].trim();
   const proto = forwarded || (hostname === "localhost" || hostname === "127.0.0.1" ? "http" : "https");
-  if (!ALLOWED_HOSTS.has(hostname)) return "https://lukfor.me";
+  if (!ALLOWED_HOSTS.has(hostname)) return "https://lukforme.com";
   return `${proto}://${hostHeader}`;
 }
 
@@ -217,8 +262,8 @@ function readBody(req, limit = 8192) {
   });
 }
 
-async function readJson(req) {
-  const text = await readBody(req);
+async function readJson(req, limit) {
+  const text = await readBody(req, limit || 8192);
   if (!text) return {};
   try {
     return JSON.parse(text);
@@ -408,6 +453,143 @@ function paymentView(data, orderNsu, receiptUrl) {
     code: saved.code || "",
     color: saved.color || ""
   };
+}
+
+function adminSecret() {
+  return process.env.ADMIN_SECRET || process.env.ADMIN_PASSWORD || "";
+}
+
+function signAdmin(exp) {
+  const payload = String(exp);
+  const mac = crypto.createHmac("sha256", adminSecret()).update(payload).digest("base64url");
+  return `${payload}.${mac}`;
+}
+
+function adminOk(req) {
+  if (!process.env.ADMIN_PASSWORD || !adminSecret()) return false;
+  const header = String(req.headers.cookie || "");
+  const match = header.match(/(?:^|;\s*)lfm_admin=([^;]+)/);
+  if (!match) return false;
+  const token = decodeURIComponent(match[1]);
+  const dot = token.lastIndexOf(".");
+  if (dot < 1) return false;
+  const payload = token.slice(0, dot);
+  const mac = token.slice(dot + 1);
+  const expected = crypto.createHmac("sha256", adminSecret()).update(payload).digest("base64url");
+  const left = Buffer.from(mac);
+  const right = Buffer.from(expected);
+  if (left.length !== right.length || !crypto.timingSafeEqual(left, right)) return false;
+  const exp = Number(payload);
+  return Number.isFinite(exp) && exp > Date.now() / 1000;
+}
+
+function requireAdmin(req, res) {
+  if (!process.env.ADMIN_PASSWORD) {
+    sendJson(res, 503, { error: "O painel ainda não tem senha." });
+    return false;
+  }
+  if (!adminOk(req)) {
+    sendJson(res, 401, { error: "Entre para continuar." });
+    return false;
+  }
+  return true;
+}
+
+function sameSite(req) {
+  const origin = req.headers.origin;
+  if (!origin) return true;
+  const host = String(req.headers["x-forwarded-host"] || req.headers.host || "").split(",")[0].trim();
+  try {
+    return new URL(origin).host === host;
+  } catch {
+    return false;
+  }
+}
+
+function adminCookie(req, token, maxAge) {
+  const host = String(req.headers["x-forwarded-host"] || req.headers.host || "").split(",")[0].trim();
+  const hostname = host.replace(/:\d+$/, "").toLowerCase();
+  const forwarded = String(req.headers["x-forwarded-proto"] || "").split(",")[0].trim();
+  const secure = forwarded === "https" || (forwarded !== "http" && hostname !== "localhost" && hostname !== "127.0.0.1");
+  return `lfm_admin=${encodeURIComponent(token)}; HttpOnly; Path=/; Max-Age=${maxAge}; SameSite=Lax${secure ? "; Secure" : ""}`;
+}
+
+async function handleAdminLogin(req, res) {
+  if (!sameSite(req)) {
+    sendJson(res, 403, { error: "Origem recusada." });
+    return;
+  }
+  if (limited(clientIp(req))) {
+    sendJson(res, 429, { error: "Muitas tentativas agora. Espere um minuto." });
+    return;
+  }
+  const password = process.env.ADMIN_PASSWORD || "";
+  if (!password || !adminSecret()) {
+    sendJson(res, 503, { error: "O painel ainda não tem senha." });
+    return;
+  }
+  const body = await readJson(req);
+  const given = crypto.createHash("sha256").update(String(body.password || "")).digest();
+  const expected = crypto.createHash("sha256").update(password).digest();
+  if (!crypto.timingSafeEqual(given, expected)) {
+    sendJson(res, 401, { error: "Senha incorreta." });
+    return;
+  }
+  const exp = Math.floor(Date.now() / 1000) + 14 * 24 * 60 * 60;
+  res.setHeader("Set-Cookie", adminCookie(req, signAdmin(exp), 14 * 24 * 60 * 60));
+  sendJson(res, 200, { ok: true });
+}
+
+function handleAdminLogout(req, res) {
+  res.setHeader("Set-Cookie", adminCookie(req, "", 0));
+  sendJson(res, 200, { ok: true });
+}
+
+async function handleAdminSave(req, res, id) {
+  if (!sameSite(req)) {
+    sendJson(res, 403, { error: "Origem recusada." });
+    return;
+  }
+  if (!requireAdmin(req, res)) return;
+  const body = await readJson(req, 256 * 1024);
+  const product = store.update(id, body);
+  catalog = store.publicList();
+  sendJson(res, 200, { product });
+}
+
+async function handleAdminUpload(req, res) {
+  if (!sameSite(req)) {
+    sendJson(res, 403, { error: "Origem recusada." });
+    return;
+  }
+  if (!requireAdmin(req, res)) return;
+  const body = await readJson(req, 8 * 1024 * 1024);
+  const mime = String(body.mime || "");
+  const encoded = String(body.data || "").replace(/^data:[^,]*,/, "");
+  const buffer = Buffer.from(encoded, "base64");
+  const image = store.saveUpload(body.code, body.name, buffer, mime);
+  sendJson(res, 200, { image });
+}
+
+function serveUpload(req, res, relative) {
+  const file = store.uploadFile(relative);
+  if (!file) {
+    notFound(res);
+    return;
+  }
+  const type = MIME[path.extname(file).toLowerCase()] || "application/octet-stream";
+  const stat = fs.statSync(file);
+  res.writeHead(200, {
+    ...SECURITY,
+    "Content-Type": type,
+    "Cache-Control": "public, max-age=86400",
+    "Content-Length": stat.size
+  });
+  if (req.method === "HEAD") {
+    res.end();
+    return;
+  }
+  fs.createReadStream(file).pipe(res);
 }
 
 function fail(res, error) {
