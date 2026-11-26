@@ -48,10 +48,10 @@ function productText(product) {
   const title = product.name ? `${product.name} ${product.code}` : `${product.line} ${product.code}`;
   const name = `${title} (${product.category})${color}`;
   if (onSale(product)) {
-    return `Olá, Luk for Me. Quero a armação ${name} na Black November, com 20%: de ${brl(product.price)} por ${brl(salePrice(product.price))}. Vou enviar a foto da receita e uma foto de frente.`;
+    return `Olá, Luk for Me. Quero a armação ${name} na Black November, com 20%: de ${brl(product.price)} por ${brl(salePrice(product.price))}.`;
   }
   const status = product.note ? ` (${product.note})` : "";
-  return `Olá, Luk for Me. Quero a armação ${name}, ${brl(product.price)}${status}. Vou enviar a foto da receita e uma foto de frente.`;
+  return `Olá, Luk for Me. Quero a armação ${name}, ${brl(product.price)}${status}.`;
 }
 
 function findProduct(code) {
@@ -647,7 +647,7 @@ function initOrder() {
         amount.textContent = paid;
       }
       actions.hidden = false;
-      const message = `Olá, Luk for Me. Paguei a armação ${piece}${paid ? `, ${paid}` : ""}. Pedido ${orderNsu}. Vou enviar a foto da receita e uma foto de frente.`;
+      const message = `Olá, Luk for Me. Paguei a armação ${piece}${paid ? `, ${paid}` : ""}. Pedido ${orderNsu}.`;
       wa.href = waHref(message);
       wa.target = "_blank";
       wa.rel = "noopener noreferrer";
